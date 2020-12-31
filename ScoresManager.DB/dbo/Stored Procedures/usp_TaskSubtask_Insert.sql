@@ -1,4 +1,5 @@
 ﻿
+
 -- =============================================
 -- Author:			Sergei Boikov
 -- Create Date:		2020-12-28
@@ -21,7 +22,7 @@
 */
 
 -- =============================================
-CREATE PROCEDURE [mentor].[usp_TaskSubtask_Insert]
+CREATE PROCEDURE [dbo].[usp_TaskSubtask_Insert]
 (
     @json NVARCHAR(MAX)
 )

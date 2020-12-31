@@ -1,6 +1,8 @@
-﻿CREATE VIEW [dbo].[vw_Task]
+﻿
+CREATE VIEW [dbo].[vw_Task]
 AS
 SELECT     c.[Name]			AS [CourseName]
+		,  t.TaskId
 		,  t.[Name]			AS [TaskName]    
 		,  t.[Description]  AS [TaskDesc]
 		,  t.[Topic]		AS [TaskTopic]        

@@ -1,4 +1,5 @@
 ﻿
+
 -- =============================================
 -- Author:      Boykov_Sergey
 -- Create Date: 2020-12-29
@@ -16,7 +17,7 @@
                                                          ]
                                              }' */
 -- =============================================
-CREATE PROCEDURE [mentor].[usp_Scores_Insert]
+CREATE PROCEDURE [dbo].[usp_Scores_Insert]
 (
     @json NVARCHAR(MAX)
 )

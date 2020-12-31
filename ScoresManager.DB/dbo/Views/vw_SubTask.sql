@@ -1,6 +1,8 @@
-﻿CREATE VIEW [dbo].[vw_SubTask]
+﻿
+CREATE VIEW [dbo].[vw_SubTask]
 AS
 SELECT     t.[Name]			AS [TaskName] 
+		, st.[SubTaskId]		
 		, st.[Name]			AS [SubTaskName]         
 		, st.[Description]  AS [SubTaskDesc]
 		, st.[Topic]		AS [SubTaskTopic]        
