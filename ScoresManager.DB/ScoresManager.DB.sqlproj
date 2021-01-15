@@ -92,5 +92,6 @@
     <Build Include="Security\student_1.sql" />
     <Build Include="dbo\Stored Procedures\usp_TaskSubtask_Insert_1.sql" />
     <Build Include="dbo\Stored Procedures\usp_Scores_Insert_1.sql" />
+    <Build Include="dbo\Views\vw_Bonus.sql" />
   </ItemGroup>
 </Project>
