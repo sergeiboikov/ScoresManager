@@ -11,9 +11,9 @@
     [SchemaName]   NUMERIC (8, 2) CONSTRAINT [DF_SubTaskLog_SchemaName] DEFAULT ((0)) NOT NULL,
     [Aliases]      NUMERIC (8, 2) CONSTRAINT [DF_SubTaskLog_Aliases] DEFAULT ((0)) NOT NULL,
     [DetermSort]   NUMERIC (8, 2) CONSTRAINT [DF_SubTaskLog_DetermSort] DEFAULT ((0)) NOT NULL,
-    [Accuracy]     AS             ((((([NameConv]+[Readability])+[Sarg])+[SchemaName])+[Aliases])+[DetermSort]),
+    [Accuracy]     NUMERIC (8, 2) CONSTRAINT [DF_SubTaskLog_Accuracy] DEFAULT ((0)) NOT NULL,
     [Extra]        NUMERIC (8, 2) CONSTRAINT [DF_SubTaskLog_Extra] DEFAULT ((0)) NOT NULL,
-    [TotalScore]   AS             ((([Score]+[OnTime])+((((([NameConv]+[Readability])+[Sarg])+[SchemaName])+[Aliases])+[DetermSort]))+[Extra]),
+    [TotalScore]   AS             ((([Score]+[OnTime])+[Accuracy])+[Extra]),
     [Comment]      NVARCHAR (500) NULL,
     [sysCreatedAt] DATETIME       CONSTRAINT [DF_SubTaskLog_sysCreatedAt] DEFAULT (getutcdate()) NULL,
     [sysChangedAt] DATETIME       CONSTRAINT [DF_SubTaskLog_sysChangedAt] DEFAULT (getutcdate()) NULL,
@@ -24,6 +24,8 @@
     CONSTRAINT [FK_SubTaskLog_User_ReviewerId] FOREIGN KEY ([ReviewerId]) REFERENCES [dbo].[User] ([UserId]),
     CONSTRAINT [FK_SubTaskLog_User_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [dbo].[User] ([UserId])
 );
+
+
 
 
 

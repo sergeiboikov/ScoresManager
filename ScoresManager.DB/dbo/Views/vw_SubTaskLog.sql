@@ -2,7 +2,8 @@
 /****** Object:  View [dbo].[vw_SubTaskLog]    Script Date: 12/30/2020 4:10:54 PM ******/
 CREATE VIEW [dbo].[vw_SubTaskLog]
 AS
-SELECT	    c.CourseId
+SELECT	  stl.SubTaskLogId
+		,	c.CourseId
 		,   c.[Name]			AS [CourseName]
 		,   t.TaskId
 		,   t.[Name]			AS [TaskName]
@@ -13,13 +14,7 @@ SELECT	    c.CourseId
 		,  u2.UserId			AS [ReviewerId]
 		,  u2.[Name]			AS [ReviewerName]  
 		, stl.[Score]       
-		, stl.[OnTime]  
-		, stl.[NameConv]
-		, stl.[Readability]
-		, stl.[Sarg]
-		, stl.[SchemaName]
-		, stl.[Aliases]
-		, stl.[DetermSort]
+		, stl.[OnTime]      
 		, stl.[Accuracy]    
 		, stl.[Extra]       
 		, stl.[TotalScore]  

@@ -1,7 +1,9 @@
-﻿CREATE VIEW [dbo].[vw_Course]
+﻿
+CREATE VIEW [dbo].[vw_Course]
 AS
-SELECT	  [Name] AS [CourseName]
-		, [Datestart] 
-		, [Datefinish]
+SELECT		[CourseId]	  
+		,	[Name] AS [CourseName]
+		,	[Datestart] 
+		,	[Datefinish]
 FROM [dbo].[Course]
 
