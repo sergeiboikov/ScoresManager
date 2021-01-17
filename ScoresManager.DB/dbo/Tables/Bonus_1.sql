@@ -7,8 +7,11 @@
     [sysChangedAt] DATETIME       CONSTRAINT [DF_Bonus_sysChangedAt] DEFAULT (getutcdate()) NULL,
     [sysCreatedBy] INT            CONSTRAINT [DF_Bonus_sysCreatedBy] DEFAULT ((-1)) NULL,
     [sysChangedBy] INT            CONSTRAINT [DF_Bonus_sysChangedBy] DEFAULT ((-1)) NULL,
-    CONSTRAINT [PK_Bonus] PRIMARY KEY CLUSTERED ([BonusId] ASC)
+    CONSTRAINT [PK_Bonus] PRIMARY KEY CLUSTERED ([BonusId] ASC),
+    CONSTRAINT [UC_Bonus_Code] UNIQUE NONCLUSTERED ([Code] ASC)
 );
+
+
 
 
 

@@ -22,8 +22,11 @@
     CONSTRAINT [PK_SubTaskLog] PRIMARY KEY CLUSTERED ([SubTaskLogId] ASC),
     CONSTRAINT [FK_SubTaskLog_SubTask_SubTaskId] FOREIGN KEY ([SubTaskId]) REFERENCES [dbo].[SubTask] ([SubTaskId]),
     CONSTRAINT [FK_SubTaskLog_User_ReviewerId] FOREIGN KEY ([ReviewerId]) REFERENCES [dbo].[User] ([UserId]),
-    CONSTRAINT [FK_SubTaskLog_User_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [dbo].[User] ([UserId])
+    CONSTRAINT [FK_SubTaskLog_User_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [dbo].[User] ([UserId]),
+    CONSTRAINT [UC_SubTaskLog_SubTaskId_StudentId] UNIQUE NONCLUSTERED ([SubTaskId] ASC, [StudentId] ASC)
 );
+
+
 
 
 

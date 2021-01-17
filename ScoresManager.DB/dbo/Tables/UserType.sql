@@ -6,5 +6,7 @@
     [sysChangedAt] DATETIME       CONSTRAINT [DF_UserType_sysChangedAt] DEFAULT (getutcdate()) NULL,
     [sysCreatedBy] INT            CONSTRAINT [DF_UserType_sysCreatedBy] DEFAULT ((-1)) NULL,
     [sysChangedBy] INT            CONSTRAINT [DF_UserType_sysChangedBy] DEFAULT ((-1)) NULL,
-    CONSTRAINT [PK_UserType] PRIMARY KEY CLUSTERED ([UserTypeId] ASC)
+    CONSTRAINT [PK_UserType] PRIMARY KEY CLUSTERED ([UserTypeId] ASC),
+    CONSTRAINT [UC_UserType_Name] UNIQUE NONCLUSTERED ([Name] ASC)
 );
+
