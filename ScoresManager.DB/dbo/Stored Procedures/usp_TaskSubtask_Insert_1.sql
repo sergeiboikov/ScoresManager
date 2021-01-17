@@ -1,6 +1,7 @@
 ﻿
 
 
+
 -- =============================================
 -- Author:			Sergei Boikov
 -- Create Date:		2020-12-28
@@ -120,11 +121,6 @@ IF ISJSON(@json) > 0
 				OUTPUT Inserted.SubTaskId, Inserted.[Name], $ACTION
 				INTO #TEMP_SUBTASK_RESULT;
 
-				SELECT tsr.[SubTaskId], b.BonusId 
-				FROM #TEMP_SUBTASK_RESULT tsr
-				INNER JOIN #TEMP_SOURCE AS tmp ON tmp.SubTaskName = tsr.[SubTaskName]
-				LEFT JOIN [dbo].[Bonus] AS b ON b.[Name] = tmp.Bonus
-
 				-- Check Bonus names
 				SELECT TOP 1 @NoMatchedBonusFromJson = tmp.[Bonus]
 				FROM #TEMP_SOURCE AS tmp
@@ -155,9 +151,9 @@ IF ISJSON(@json) > 0
 				(
 					 src.[SubTaskId]
 					,src.[BonusId]
-				)
-				WHEN NOT MATCHED BY SOURCE THEN
-				DELETE;
+				);
+				--WHEN NOT MATCHED BY SOURCE THEN
+				--DELETE;
 
 				DROP TABLE #TEMP_SOURCE;
 				DROP TABLE #TEMP_TASK_RESULT;
