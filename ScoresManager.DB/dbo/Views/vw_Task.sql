@@ -7,6 +7,7 @@ SELECT		c.[CourseId]
 		 ,  t.TaskId
 		 ,  t.[Name]			AS [TaskName]    
 		 ,  t.[Description]		AS [TaskDesc]
-		 ,  t.[Topic]			AS [TaskTopic]        
+		 ,  tt.[Name]			AS [TaskTopic]        
 FROM [dbo].[Task] t
 INNER JOIN [dbo].[Course] c ON c.CourseId = t.CourseId
+INNER JOIN [dbo].[TaskTopic] tt ON tt.TaskTopicId = t.TaskTopicId

@@ -31,7 +31,9 @@ CREATE PROCEDURE [dbo].[usp_TaskSubtask_Insert]
 AS
 BEGIN
 	SET NOCOUNT ON;
-	DECLARE		@NoMatchedBonusFromJson		NVARCHAR(250)
+	DECLARE		@NoMatchedBonusFromJson				NVARCHAR(250),
+				@NoMatchedTaskTopicFromJson			NVARCHAR(250),
+				@NoMatchedSubTaskTopicFromJson		NVARCHAR(250)
 
 IF ISJSON(@json) > 0
 	BEGIN
@@ -55,38 +57,65 @@ IF ISJSON(@json) > 0
                 ) AS rootL
                 LEFT JOIN OPENJSON(@json, N'$.Subtasks')
                 WITH (
-                            SubTaskName		NVARCHAR(250)   '$.SubTaskName'
+                         SubTaskName		NVARCHAR(250)   '$.SubTaskName'
                         ,SubTaskDescription NVARCHAR(250)   '$.SubTaskDescription'
                         ,SubTaskTopic       NVARCHAR(250)   '$.SubTaskTopic'
 						,Bonuses			NVARCHAR(MAX)	'$.Bonuses'				AS JSON
                 ) AS liefL ON 1 = 1
 				OUTER APPLY OPENJSON(Bonuses)
 					WITH (Bonus NVARCHAR(30) '$');
+				
+				-- Check TaskTopic names
+				SELECT TOP 1 @NoMatchedTaskTopicFromJson = tmp.[TaskTopic]
+				FROM #TEMP_SOURCE AS tmp
+				LEFT JOIN [dbo].[TaskTopic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))
+				WHERE tmp.[TaskTopic] IS NOT NULL
+					AND tt.[TaskTopicId] IS NULL
+
+				IF (@NoMatchedTaskTopicFromJson IS NOT NULL)
+                BEGIN
+					RAISERROR (N'TaskTopic: ''%s'' isn''t found', 16, 1, @NoMatchedTaskTopicFromJson);
+                END
+
+				-- Check SubTaskTopic names
+				SELECT TOP 1 @NoMatchedSubTaskTopicFromJson = tmp.[SubTaskTopic]
+				FROM #TEMP_SOURCE AS tmp
+				LEFT JOIN [dbo].[SubTaskTopic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
+				WHERE tmp.[SubTaskTopic] IS NOT NULL
+					AND stt.[SubTaskTopicId] IS NULL
+
+				IF (@NoMatchedSubTaskTopicFromJson IS NOT NULL)
+                BEGIN
+					RAISERROR (N'SubTaskTopic: ''%s'' isn''t found', 16, 1, @NoMatchedSubTaskTopicFromJson);
+                END
 
 				--Task
 				MERGE INTO [dbo].[Task] tgt
-				USING (SELECT DISTINCT CourseId, ts.TaskName, ts.TaskDescription, ts.TaskTopic 
-						FROM #TEMP_SOURCE AS ts
-						INNER JOIN [dbo].[Course] AS c 
-							ON c.[Name] = ts.[CourseName]) src
+				USING (	SELECT DISTINCT  CourseId
+										,tmp.TaskName
+										,tmp.TaskDescription
+										,tt.TaskTopicId
+						FROM #TEMP_SOURCE AS tmp
+						INNER JOIN [dbo].[Course] AS c ON c.[Name] = tmp.[CourseName]
+						INNER JOIN [dbo].[TaskTopic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))) src
 					ON (tgt.[Name] = src.[TaskName]
 						AND tgt.[CourseId] = src.[CourseId])
 				WHEN MATCHED THEN
 				UPDATE SET
-					tgt.[Description] = src.[TaskDescription]
-					,tgt.[Topic] = src.[TaskTopic]
+					 tgt.[Description] = src.[TaskDescription]
+					,tgt.[TaskTopicId] = src.[TaskTopicId]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
-					[Name]
+					 [Name]
 					,[Description]
-					,[Topic]
+					,[TaskTopicId]
 					,[CourseId]
 				) VALUES
 				(
-					src.[TaskName]
+					 src.[TaskName]
 					,src.[TaskDescription]
-					,src.[TaskTopic]
+					,src.[TaskTopicId]
 					,src.[CourseId]
 				)
 				OUTPUT Inserted.TaskId, $ACTION
@@ -95,28 +124,32 @@ IF ISJSON(@json) > 0
 				-- SubTask
 				MERGE INTO [dbo].[SubTask] tgt
 				USING (
-					SELECT DISTINCT (SELECT [TaskId] FROM #TEMP_TASK_RESULT) AS [TaskId],
-					tmp.[SubTaskName], tmp.[SubTaskDescription], tmp.[SubTaskTopic] FROM #TEMP_SOURCE AS tmp
-					WHERE tmp.[SubTaskName] IS NOT NULL) src
-						ON (src.[SubTaskName] = tgt.[Name] 
-							AND src.[TaskId] = tgt.[TaskId])
+					SELECT DISTINCT 
+						(SELECT [TaskId] FROM #TEMP_TASK_RESULT) AS [TaskId]
+						,tmp.[SubTaskName]
+						,tmp.[SubTaskDescription]
+						,stt.[SubTaskTopicId] 
+					FROM #TEMP_SOURCE AS tmp
+					INNER JOIN [dbo].[SubTaskTopic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
+					WHERE tmp.[SubTaskName] IS NOT NULL) src ON (src.[SubTaskName] = tgt.[Name] 
+						AND src.[TaskId] = tgt.[TaskId])
 				WHEN MATCHED THEN
 				UPDATE SET
-					tgt.[Description] = src.[SubTaskDescription]
-					,tgt.[Topic] = src.[SubTaskTopic]
+					 tgt.[Description] = src.[SubTaskDescription]
+					,tgt.[SubTaskTopicId] = src.[SubTaskTopicId]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
-					[TaskId]
+					 [TaskId]
 					,[Name]
 					,[Description]
-					,[Topic]
+					,[SubTaskTopicId]
 				) VALUES
 				(
-					src.[TaskId]
+					 src.[TaskId]
 					,src.[SubTaskName]
 					,src.[SubTaskDescription]
-					,src.[SubTaskTopic]
+					,src.[SubTaskTopicId]
 				)
 				OUTPUT Inserted.SubTaskId, Inserted.[Name], $ACTION
 				INTO #TEMP_SUBTASK_RESULT;
@@ -136,13 +169,13 @@ IF ISJSON(@json) > 0
 				-- SubTaskBonus
 				MERGE INTO [dbo].[SubTaskBonus] tgt
 				USING (
-					SELECT tsr.[SubTaskId], b.[BonusId]
+					SELECT	 tsr.[SubTaskId]
+							,b.[BonusId]
 					FROM #TEMP_SUBTASK_RESULT tsr
 					INNER JOIN #TEMP_SOURCE AS tmp ON tmp.SubTaskName = tsr.[SubTaskName]
 					LEFT JOIN [dbo].[Bonus] AS b ON b.[Name] = tmp.[Bonus]
-					WHERE tmp.[Bonus] IS NOT NULL) src
-						ON (src.[SubTaskId] = tgt.[SubTaskId] 
-							AND src.[BonusId] = tgt.[BonusId])
+					WHERE tmp.[Bonus] IS NOT NULL) src ON (src.[SubTaskId] = tgt.[SubTaskId] 
+						AND src.[BonusId] = tgt.[BonusId])
 				WHEN NOT MATCHED BY TARGET THEN
 				INSERT (
 					 [SubTaskId]
@@ -152,8 +185,16 @@ IF ISJSON(@json) > 0
 					 src.[SubTaskId]
 					,src.[BonusId]
 				);
-				--WHEN NOT MATCHED BY SOURCE THEN
-				--DELETE;
+				
+				--Delete not matched Bonuses from [dbo].[SubTaskBonus]
+				DELETE FROM [dbo].[SubTaskBonus]
+				WHERE [SubTaskBonusId] IN ( SELECT stb.[SubTaskBonusId]
+											FROM [dbo].[SubTaskBonus] stb
+											INNER JOIN [dbo].[Bonus] b ON b.[BonusId] = stb.[BonusId]
+											INNER JOIN #TEMP_SUBTASK_RESULT tsr ON tsr.[SubTaskId] = stb.[SubTaskId]
+											LEFT JOIN #TEMP_SOURCE AS tmp ON tmp.SubTaskName = tsr.[SubTaskName]
+												AND TRIM(UPPER(tmp.[Bonus])) = TRIM(UPPER(b.[Name]))
+											WHERE tmp.[Bonus] IS NULL);
 
 				DROP TABLE #TEMP_SOURCE;
 				DROP TABLE #TEMP_TASK_RESULT;

@@ -2,5 +2,14 @@
 
 CREATE VIEW [student].[vw_Task]
 AS
-SELECT   TaskId, CourseId, Name, Description, Topic, sysCreatedAt, sysChangedAt, sysCreatedBy, sysChangedBy
-FROM         dbo.Task
+SELECT    t.TaskId
+		, t.CourseId
+		, t.Name
+		, t.Description
+		, tt.[Name] AS Topic
+		, t.sysCreatedAt
+		, t.sysChangedAt
+		, t.sysCreatedBy
+		, t.sysChangedBy
+FROM         dbo.Task t
+INNER JOIN dbo.TaskTopic tt ON tt.TaskTopicId = t.TaskTopicId

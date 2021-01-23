@@ -1,12 +1,17 @@
 ﻿
 
+
+
 CREATE VIEW [dbo].[vw_SubTask]
 AS
-SELECT     t.[TaskId]
-		,  t.[Name]			AS [TaskName] 
-		, st.[SubTaskId]		
-		, st.[Name]			AS [SubTaskName]         
-		, st.[Description]  AS [SubTaskDesc]
-		, st.[Topic]		AS [SubTaskTopic]        
+SELECT DISTINCT    
+		   t. [TaskId]
+		,  t. [Name]			AS [TaskName] 
+		, st. [SubTaskId]		
+		, st. [Name]			AS [SubTaskName]         
+		, st. [Description]		AS [SubTaskDesc]
+		,stt.SubTaskTopicId
+		,stt.[Name]				AS [SubTaskTopicName]
 FROM [dbo].[SubTask] st
 INNER JOIN [dbo].[Task] t ON t.TaskId = st.TaskId
+INNER JOIN [dbo].[SubTaskTopic] stt ON stt.SubTaskTopicId = st.SubTaskTopicId

@@ -7,8 +7,11 @@
     [sysCreatedBy]   INT      CONSTRAINT [DF_SubTaskBonus_sysCreatedBy] DEFAULT ((-1)) NULL,
     [sysChangedBy]   INT      CONSTRAINT [DF_SubTaskBonus_sysChangedBy] DEFAULT ((-1)) NULL,
     CONSTRAINT [PK_SubTaskBonus] PRIMARY KEY CLUSTERED ([SubTaskBonusId] ASC),
+    CONSTRAINT [FK_SubTaskBonus_SubTask_SubTaskId] FOREIGN KEY ([SubTaskId]) REFERENCES [dbo].[SubTask] ([SubTaskId]),
     CONSTRAINT [UC_SubTaskBonus_SubTaskId_BonusId] UNIQUE NONCLUSTERED ([SubTaskId] ASC, [BonusId] ASC)
 );
+
+
 
 
 
