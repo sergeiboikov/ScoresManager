@@ -1,6 +1,8 @@
 ﻿
+
 CREATE VIEW [dbo].[vw_TaskTopic]
 AS
-SELECT	  [TaskTopicId]
+SELECT	  [TopicId]				AS [TaskTopicId]
 	,	  [Name]				AS [TaskTopicName]
-FROM [dbo].[TaskTopic]
+FROM [dbo].[Topic]
+WHERE [IsTopicForTasks] = 1

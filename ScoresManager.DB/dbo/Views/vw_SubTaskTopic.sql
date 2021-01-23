@@ -1,6 +1,9 @@
 ﻿
+
+
 CREATE VIEW [dbo].[vw_SubTaskTopic]
 AS
-SELECT	  [SubTaskTopicId]
+SELECT	  [TopicId]				AS [SubTaskTopicId]
 	,	  [Name]				AS [SubTaskTopicName]
-FROM [dbo].[SubTaskTopic]
+FROM [dbo].[Topic]
+WHERE [IsTopicForSubTasks] = 1

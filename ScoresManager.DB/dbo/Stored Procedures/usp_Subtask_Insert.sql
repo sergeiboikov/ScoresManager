@@ -57,14 +57,14 @@ IF ISJSON(@json) > 0
 				WHEN MATCHED THEN
 				UPDATE SET
 					 tgt.[Description] = src.[SubTaskDescription]
-					,tgt.[SubTaskTopicId] = src.[SubTaskTopicId]
+					,tgt.[TopicId] = src.[SubTaskTopicId]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
 					 [TaskId]
 					,[Name]
 					,[Description]
-					,[SubTaskTopicId]
+					,[TopicId]
 				) VALUES
 				(
 					 src.[TaskId]

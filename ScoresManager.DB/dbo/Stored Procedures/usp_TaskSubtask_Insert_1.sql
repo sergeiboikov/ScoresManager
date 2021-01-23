@@ -68,7 +68,7 @@ IF ISJSON(@json) > 0
 				-- Check TaskTopic names
 				SELECT TOP 1 @NoMatchedTaskTopicFromJson = tmp.[TaskTopic]
 				FROM #TEMP_SOURCE AS tmp
-				LEFT JOIN [dbo].[TaskTopic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))
+				LEFT JOIN [dbo].[Topic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))
 				WHERE tmp.[TaskTopic] IS NOT NULL
 					AND tt.[TaskTopicId] IS NULL
 
@@ -80,7 +80,7 @@ IF ISJSON(@json) > 0
 				-- Check SubTaskTopic names
 				SELECT TOP 1 @NoMatchedSubTaskTopicFromJson = tmp.[SubTaskTopic]
 				FROM #TEMP_SOURCE AS tmp
-				LEFT JOIN [dbo].[SubTaskTopic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
+				LEFT JOIN [dbo].[Topic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
 				WHERE tmp.[SubTaskTopic] IS NOT NULL
 					AND stt.[SubTaskTopicId] IS NULL
 
@@ -97,19 +97,19 @@ IF ISJSON(@json) > 0
 										,tt.TaskTopicId
 						FROM #TEMP_SOURCE AS tmp
 						INNER JOIN [dbo].[Course] AS c ON c.[Name] = tmp.[CourseName]
-						INNER JOIN [dbo].[TaskTopic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))) src
+						INNER JOIN [dbo].[Topic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))) src
 					ON (tgt.[Name] = src.[TaskName]
 						AND tgt.[CourseId] = src.[CourseId])
 				WHEN MATCHED THEN
 				UPDATE SET
 					 tgt.[Description] = src.[TaskDescription]
-					,tgt.[TaskTopicId] = src.[TaskTopicId]
+					,tgt.[TopicId] = src.[TaskTopicId]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
 					 [Name]
 					,[Description]
-					,[TaskTopicId]
+					,[TopicId]
 					,[CourseId]
 				) VALUES
 				(
@@ -130,20 +130,20 @@ IF ISJSON(@json) > 0
 						,tmp.[SubTaskDescription]
 						,stt.[SubTaskTopicId] 
 					FROM #TEMP_SOURCE AS tmp
-					INNER JOIN [dbo].[SubTaskTopic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
+					INNER JOIN [dbo].[Topic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
 					WHERE tmp.[SubTaskName] IS NOT NULL) src ON (src.[SubTaskName] = tgt.[Name] 
 						AND src.[TaskId] = tgt.[TaskId])
 				WHEN MATCHED THEN
 				UPDATE SET
 					 tgt.[Description] = src.[SubTaskDescription]
-					,tgt.[SubTaskTopicId] = src.[SubTaskTopicId]
+					,tgt.[TopicId] = src.[SubTaskTopicId]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
 					 [TaskId]
 					,[Name]
 					,[Description]
-					,[SubTaskTopicId]
+					,[TopicId]
 				) VALUES
 				(
 					 src.[TaskId]

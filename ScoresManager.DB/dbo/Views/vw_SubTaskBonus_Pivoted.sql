@@ -9,7 +9,7 @@ SELECT DISTINCT
 		, st.SubTaskId	
 		, st.[Name]				AS [SubTaskName]         
 		, st.[Description]		AS [SubTaskDesc] 
-		, st.SubTaskTopicId		AS [SubTaskTopicId]
+		, st.TopicId			AS [SubTaskTopicId]
 		, stt.[Name]			AS [SubTaskTopicName]
 		, (SELECT CONVERT(Bit, 1) AS [IsNameConv]	FROM [dbo].[vw_SubTaskBonus] stb WHERE stb.SubTaskId = st.SubTaskId AND stb.BonusCode = N'NameConv')	AS [IsNameConv]
 		, (SELECT CONVERT(Bit, 1) AS [IsRead]		FROM [dbo].[vw_SubTaskBonus] stb WHERE stb.SubTaskId = st.SubTaskId AND stb.BonusCode = N'Read')		AS [IsRead]
@@ -19,4 +19,4 @@ SELECT DISTINCT
 		, (SELECT CONVERT(Bit, 1) AS [IsDetermSort]	FROM [dbo].[vw_SubTaskBonus] stb WHERE stb.SubTaskId = st.SubTaskId AND stb.BonusCode = N'DetermSort')	AS [IsDetermSort]
 FROM [dbo].[SubTask] st
 INNER JOIN [dbo].[Task] t ON t.TaskId = st.TaskId
-INNER JOIN [dbo].[SubTaskTopic] stt ON stt.SubTaskTopicId = st.SubTaskTopicId
+INNER JOIN [dbo].[Topic] stt ON stt.TopicId = st.TopicId

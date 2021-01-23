@@ -93,11 +93,11 @@
     <Build Include="dbo\Stored Procedures\usp_TaskSubtask_Insert_1.sql" />
     <Build Include="dbo\Stored Procedures\usp_Scores_Insert_1.sql" />
     <Build Include="dbo\Views\vw_Bonus.sql" />
-    <Build Include="dbo\Tables\TaskTopic.sql" />
-    <Build Include="dbo\Tables\SubTaskTopic.sql" />
     <Build Include="dbo\Views\vw_TaskTopic.sql" />
     <Build Include="dbo\Views\vw_SubTaskTopic.sql" />
     <Build Include="dbo\Views\vw_SubTaskBonus_Pivoted.sql" />
     <Build Include="dbo\Stored Procedures\usp_Subtask_Insert.sql" />
+    <Build Include="dbo\Tables\Topic.sql" />
+    <Build Include="dbo\Views\vw_Topic.sql" />
   </ItemGroup>
 </Project>

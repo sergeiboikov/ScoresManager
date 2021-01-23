@@ -12,4 +12,4 @@ SELECT    st.SubTaskId
 		, st.sysCreatedBy
 		, st.sysChangedBy
 FROM         dbo.SubTask st
-INNER JOIN [dbo].[SubTaskTopic] stt ON stt.SubTaskTopicId = st.SubTaskTopicId
+INNER JOIN [dbo].[Topic] stt ON stt.TopicId = st.TopicId

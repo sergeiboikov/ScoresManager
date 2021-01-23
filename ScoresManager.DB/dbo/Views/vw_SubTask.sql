@@ -10,8 +10,8 @@ SELECT DISTINCT
 		, st. [SubTaskId]		
 		, st. [Name]			AS [SubTaskName]         
 		, st. [Description]		AS [SubTaskDesc]
-		,stt.SubTaskTopicId
+		,stt.TopicId			AS [SubTaskTopicId]
 		,stt.[Name]				AS [SubTaskTopicName]
 FROM [dbo].[SubTask] st
 INNER JOIN [dbo].[Task] t ON t.TaskId = st.TaskId
-INNER JOIN [dbo].[SubTaskTopic] stt ON stt.SubTaskTopicId = st.SubTaskTopicId
+INNER JOIN [dbo].[Topic] stt ON stt.TopicId = st.TopicId
