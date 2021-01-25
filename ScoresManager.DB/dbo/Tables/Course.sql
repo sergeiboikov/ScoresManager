@@ -8,8 +8,11 @@
     [sysCreatedBy] INT            CONSTRAINT [DF_Course_sysCreatedBy] DEFAULT ((-1)) NULL,
     [sysChangedBy] INT            CONSTRAINT [DF_Course_sysChangedBy] DEFAULT ((-1)) NULL,
     CONSTRAINT [PK_Course] PRIMARY KEY CLUSTERED ([CourseId] ASC),
+    CONSTRAINT [CH_Course_Datefinish] CHECK ([Datefinish]>=[Datestart]),
     CONSTRAINT [UC_Course_Name] UNIQUE NONCLUSTERED ([Name] ASC)
 );
+
+
 
 
 

@@ -1,5 +1,7 @@
-﻿CREATE VIEW [dbo].[vw_UserType]
+﻿
+CREATE VIEW [dbo].[vw_UserType]
 AS
-SELECT    [Name]         AS [UserTypeName]
+SELECT    [UserTypeId]
+		, [Name]         AS [UserTypeName]
         , [Description]  AS [UserTypeDesc]
 FROM [dbo].[UserType]

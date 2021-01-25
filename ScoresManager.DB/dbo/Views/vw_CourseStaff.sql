@@ -1,8 +1,10 @@
 ﻿
 
+
 CREATE VIEW [dbo].[vw_CourseStaff]
 AS
-SELECT	  c.[CourseId]
+SELECT	 cs.[CourseStaffId]
+		, c.[CourseId]
 		, c.[Name]  AS [CourseName]   
 		, u.[UserId]
         , u.[Name]  AS [UserName]     
