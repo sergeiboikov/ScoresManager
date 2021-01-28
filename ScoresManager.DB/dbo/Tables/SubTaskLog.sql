@@ -20,11 +20,13 @@
     [sysCreatedBy] INT            CONSTRAINT [DF_SubTaskLog_sysCreatedBy] DEFAULT ((-1)) NULL,
     [sysChangedBy] INT            CONSTRAINT [DF_SubTaskLog_sysChangedBy] DEFAULT ((-1)) NULL,
     CONSTRAINT [PK_SubTaskLog] PRIMARY KEY CLUSTERED ([SubTaskLogId] ASC),
+    CONSTRAINT [FK_SubTaskLog_CourseStaff_ReviewerId] FOREIGN KEY ([ReviewerId]) REFERENCES [dbo].[CourseStaff] ([CourseStaffId]),
+    CONSTRAINT [FK_SubTaskLog_CourseStaff_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [dbo].[CourseStaff] ([CourseStaffId]),
     CONSTRAINT [FK_SubTaskLog_SubTask_SubTaskId] FOREIGN KEY ([SubTaskId]) REFERENCES [dbo].[SubTask] ([SubTaskId]),
-    CONSTRAINT [FK_SubTaskLog_User_ReviewerId] FOREIGN KEY ([ReviewerId]) REFERENCES [dbo].[User] ([UserId]),
-    CONSTRAINT [FK_SubTaskLog_User_StudentId] FOREIGN KEY ([StudentId]) REFERENCES [dbo].[User] ([UserId]),
     CONSTRAINT [UC_SubTaskLog_SubTaskId_StudentId] UNIQUE NONCLUSTERED ([SubTaskId] ASC, [StudentId] ASC)
 );
+
+
 
 
 
