@@ -54,15 +54,15 @@ IF ISJSON(@json) > 0
                     CROSS APPLY OPENJSON(@json, N'$.Subtasks')
                     WITH (
                              SubTaskName    NVARCHAR(250)   '$.SubTaskName'
-                            ,Score          INT             '$.Mark'
-                            ,NameConv       INT             '$.NameConv'
-                            ,Redability     INT             '$.Redability'
-                            ,Sarg           TINYINT         '$.Sarg'
-                            ,SchemaName     TINYINT         '$.SchemaName'
-                            ,Aliases        TINYINT         '$.Aliases'
-                            ,DetermSorting  TINYINT         '$.DetermSorting'
-                            ,OnTime         INT             '$.OnTime'
-                            ,Extra          TINYINT         '$.Extra'
+                            ,Score          NUMERIC(8,2)    '$.Mark'
+                            ,NameConv       NUMERIC(8,2)    '$.NameConv'
+                            ,Redability     NUMERIC(8,2)    '$.Redability'
+                            ,Sarg           NUMERIC(8,2)    '$.Sarg'
+                            ,SchemaName     NUMERIC(8,2)    '$.SchemaName'
+                            ,Aliases        NUMERIC(8,2)    '$.Aliases'
+                            ,DetermSorting  NUMERIC(8,2)    '$.DetermSorting'
+                            ,OnTime         NUMERIC(8,2)    '$.OnTime'
+                            ,Extra          NUMERIC(8,2)    '$.Extra'
                             ,Comment        NVARCHAR(250)   '$.Comment'
                     );
 

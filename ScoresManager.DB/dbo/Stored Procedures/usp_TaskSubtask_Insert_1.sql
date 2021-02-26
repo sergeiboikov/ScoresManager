@@ -24,7 +24,7 @@
 */
 
 -- =============================================
-CREATE PROCEDURE [dbo].[usp_TaskSubtask_Insert]
+CREATE PROCEDURE [dbo].[usp_TaskSubTask_Insert]
 (
     @json NVARCHAR(MAX)
 )
@@ -64,13 +64,13 @@ IF ISJSON(@json) > 0
                 ) AS liefL ON 1 = 1
 				OUTER APPLY OPENJSON(Bonuses)
 					WITH (Bonus NVARCHAR(30) '$');
-				
+
 				-- Check TaskTopic names
 				SELECT TOP 1 @NoMatchedTaskTopicFromJson = tmp.[TaskTopic]
 				FROM #TEMP_SOURCE AS tmp
 				LEFT JOIN [dbo].[Topic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))
 				WHERE tmp.[TaskTopic] IS NOT NULL
-					AND tt.[TaskTopicId] IS NULL
+					AND tt.[TopicId] IS NULL
 
 				IF (@NoMatchedTaskTopicFromJson IS NOT NULL)
                 BEGIN
@@ -82,7 +82,7 @@ IF ISJSON(@json) > 0
 				FROM #TEMP_SOURCE AS tmp
 				LEFT JOIN [dbo].[Topic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
 				WHERE tmp.[SubTaskTopic] IS NOT NULL
-					AND stt.[SubTaskTopicId] IS NULL
+					AND stt.[TopicId] IS NULL
 
 				IF (@NoMatchedSubTaskTopicFromJson IS NOT NULL)
                 BEGIN
@@ -94,7 +94,7 @@ IF ISJSON(@json) > 0
 				USING (	SELECT DISTINCT  CourseId
 										,tmp.TaskName
 										,tmp.TaskDescription
-										,tt.TaskTopicId
+										,tt.TopicId
 						FROM #TEMP_SOURCE AS tmp
 						INNER JOIN [dbo].[Course] AS c ON c.[Name] = tmp.[CourseName]
 						INNER JOIN [dbo].[Topic] AS tt ON TRIM(UPPER(tt.[Name])) = TRIM(UPPER(tmp.[TaskTopic]))) src
@@ -103,7 +103,7 @@ IF ISJSON(@json) > 0
 				WHEN MATCHED THEN
 				UPDATE SET
 					 tgt.[Description] = src.[TaskDescription]
-					,tgt.[TopicId] = src.[TaskTopicId]
+					,tgt.[TopicId] = src.[TopicId]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
@@ -115,7 +115,7 @@ IF ISJSON(@json) > 0
 				(
 					 src.[TaskName]
 					,src.[TaskDescription]
-					,src.[TaskTopicId]
+					,src.[TopicId]
 					,src.[CourseId]
 				)
 				OUTPUT Inserted.TaskId, $ACTION
@@ -128,7 +128,7 @@ IF ISJSON(@json) > 0
 						(SELECT [TaskId] FROM #TEMP_TASK_RESULT) AS [TaskId]
 						,tmp.[SubTaskName]
 						,tmp.[SubTaskDescription]
-						,stt.[SubTaskTopicId] 
+						,stt.[TopicId] 
 					FROM #TEMP_SOURCE AS tmp
 					INNER JOIN [dbo].[Topic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
 					WHERE tmp.[SubTaskName] IS NOT NULL) src ON (src.[SubTaskName] = tgt.[Name] 
@@ -136,7 +136,7 @@ IF ISJSON(@json) > 0
 				WHEN MATCHED THEN
 				UPDATE SET
 					 tgt.[Description] = src.[SubTaskDescription]
-					,tgt.[TopicId] = src.[SubTaskTopicId]
+					,tgt.[TopicId] = src.[TopicId]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
@@ -149,7 +149,7 @@ IF ISJSON(@json) > 0
 					 src.[TaskId]
 					,src.[SubTaskName]
 					,src.[SubTaskDescription]
-					,src.[SubTaskTopicId]
+					,src.[TopicId]
 				)
 				OUTPUT Inserted.SubTaskId, Inserted.[Name], $ACTION
 				INTO #TEMP_SUBTASK_RESULT;

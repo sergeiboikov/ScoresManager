@@ -99,5 +99,6 @@
     <Build Include="dbo\Stored Procedures\usp_Subtask_Insert.sql" />
     <Build Include="dbo\Tables\Topic.sql" />
     <Build Include="dbo\Views\vw_Topic.sql" />
+    <Build Include="dbo\Stored Procedures\usp_SubTaskBonus_Insert_1.sql" />
   </ItemGroup>
 </Project>

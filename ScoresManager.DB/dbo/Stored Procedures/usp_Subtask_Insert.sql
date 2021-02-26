@@ -2,23 +2,32 @@
 
 
 
+
+
+
+
+
+
 -- =============================================
 -- Author:			Sergei Boikov
 -- Create Date:		2021-01-21
--- Description: Load information about Subtask from JSON
--- Format JSON: N'{"Bonuses":[{"Value":"Readability"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"TaskId":1}' 
+-- Description: Load information about Subtask from JSON. Value is BonusCode
+-- Format JSON: N'{"Bonuses":[{"Value":"Read"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"TaskId":1}' 
 
---	Example. Add Task and Subtasks: EXEC [dbo].[usp_Subtask_Insert] @json = N'{"Bonuses":[{"Value":"Readability"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"TaskId":1}' 
+--	Example. EXEC [dbo].[usp_Subtask_Insert] @json = N'{"Bonuses":[{"Value":"Read"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"TaskId":1}' 
 
 -- =============================================
-CREATE PROCEDURE [dbo].[usp_Subtask_Insert]
+CREATE PROCEDURE [dbo].[usp_SubTask_Insert]
 (
-    @json NVARCHAR(MAX)
+     @json			NVARCHAR(MAX)
 )
 AS
 BEGIN
 	SET NOCOUNT ON;
-	DECLARE		@NoMatchedBonusFromJson				NVARCHAR(250)
+	DECLARE		 @NoMatchedBonusFromJson	NVARCHAR(250)
+				,@TaskId					INT
+				,@TopicId					INT
+				
 
 IF ISJSON(@json) > 0
 	BEGIN
@@ -42,6 +51,19 @@ IF ISJSON(@json) > 0
 				OUTER APPLY OPENJSON(Bonuses)
 					WITH (BonusCode NVARCHAR(30) '$.Value');				
 
+				/*Check that Task with TaskId exists*/
+				SELECT @TaskId = tmp.TaskId FROM #TEMP_SOURCE tmp;
+				IF (@TaskId IS NULL OR NOT EXISTS(  SELECT 1
+													FROM [dbo].[Task] t
+													WHERE t.TaskId = @TaskId))
+					THROW 50000, N'Parent task isn''t found', 0;
+
+				/*Check that Topic with TopicId exists*/
+				SELECT @TopicId = tmp.SubTaskTopicId FROM #TEMP_SOURCE tmp;
+				IF (@TopicId IS NULL OR NOT EXISTS(  SELECT 1
+													 FROM [dbo].[Topic] t
+													 WHERE t.TopicId = @TopicId))
+					THROW 50000, N'Topic isn''t found', 0; 
 
 				-- SubTask
 				MERGE INTO [dbo].[SubTask] tgt
@@ -83,9 +105,7 @@ IF ISJSON(@json) > 0
 					AND b.[BonusId] IS NULL
 
 				IF (@NoMatchedBonusFromJson IS NOT NULL)
-                BEGIN
 					RAISERROR (N'Bonus code: ''%s'' isn''t found', 16, 1, @NoMatchedBonusFromJson);
-                END
 
 				-- SubTaskBonus
 				MERGE INTO [dbo].[SubTaskBonus] tgt
@@ -119,12 +139,18 @@ IF ISJSON(@json) > 0
 
 				DROP TABLE #TEMP_SOURCE;
 				DROP TABLE #TEMP_SUBTASK_RESULT;
+
             COMMIT TRANSACTION
+
         END TRY
         BEGIN CATCH
 	            IF @@TRANCOUNT > 0 
 		            ROLLBACK TRANSACTION;
 	            THROW;
+				
         END CATCH;
     END
+	ELSE
+		THROW 50000, N'JSON isn''t correct', 0;
+		
 END
