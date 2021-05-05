@@ -18,3 +18,9 @@ The application contains the following information about a course:
 1. Build and deploy DB from ScoresManager.DB project to SQL Server;
 2. Publish canvas powerapps application from ScoresManager.PowerApps folder. As a source you need to choose DB from the first step;
 3. Publish power bi report from ScoresManager.PowerBI folder. As a source you need to choose DB from the first step.
+
+## PowerApps interface
+![image](https://user-images.githubusercontent.com/46808009/117143975-73068580-adc2-11eb-8f00-92fd15067a1a.png)
+
+## PowerBI dashboard
+![image](https://user-images.githubusercontent.com/46808009/117144103-98938f00-adc2-11eb-8f44-3450bcaac60e.png)
