@@ -141,8 +141,8 @@ IF ISJSON(@json) > 0
                             , st.SubTaskId
                             , tmp.Score
                             , isnull(tmp.NameConv,0) + isnull(tmp.Redability,0) + isnull(tmp.Sarg,0) + isnull(tmp.SchemaName,0) + isnull(tmp.Aliases,0) + isnull(tmp.DetermSorting,0) AS Accuracy
-                            , isnull(tmp.OnTime,0) AS OnTime
-                            , isnull(tmp.Extra,0) AS Extra
+                            , tmp.OnTime
+                            , tmp.Extra
                             , tmp.Comment
                         FROM #TEMP_SOURCE AS tmp 
                             INNER JOIN [dbo].[Task] AS t
