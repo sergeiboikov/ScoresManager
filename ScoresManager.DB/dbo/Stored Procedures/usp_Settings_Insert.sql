@@ -1,8 +1,9 @@
-﻿-- =============================================
+﻿
+-- =============================================
 -- Author:			Sergei Boikov
 -- Create Date:		2021-07-21
 -- Description: Load information about Settings from JSON
--- Format JSON: N'{"UserEmail":"sergei_boikov@epam.com", "CurrentCourseName":"BI.Lab.Cross.2021"}' 
+-- Format JSON: N'[{"UserEmail":"sergei_boikov@epam.com", "CurrentCourseName":"BI.Lab.Cross.2021"}, {"UserEmail":"ivan_ivanov@epam.com", "CurrentCourseName":"BI.Lab.Cross.2021"}]' 
 
 --	Example. EXEC [dbo].[usp_Settings_Insert] @json = N'{"UserEmail":"sergei_boikov@epam.com", "CurrentCourseName":"BI.Lab.Cross.2021"}' 
 
@@ -14,8 +15,8 @@ CREATE PROCEDURE [dbo].[usp_Settings_Insert]
 AS
 BEGIN
 	SET NOCOUNT ON;
-	DECLARE		@UserId					INT,
-				@CourseId				INT
+	DECLARE		@NoMatchedUserFromJson			NVARCHAR(100),
+				@NoMatchedCourseNameFromJson	NVARCHAR(250)
 				
 IF ISJSON(@json) > 0
 	BEGIN
@@ -29,32 +30,40 @@ IF ISJSON(@json) > 0
 						,CurrentCourseName	NVARCHAR(100)   '$.CurrentCourseName'
 				) AS rootL
 				
+				-- Check if User with UserEmail exists
+				SELECT TOP 1 @NoMatchedUserFromJson = tmp.[UserEmail]
+				FROM #TEMP_SOURCE AS tmp
+				LEFT JOIN [dbo].[User] AS u ON TRIM(UPPER(u.[Email])) = TRIM(UPPER(tmp.[UserEmail]))
+				WHERE tmp.[UserEmail] IS NOT NULL
+					AND u.[UserId] IS NULL
 
-				/*Check that User with UserId exists*/
-				SELECT TOP 1 @UserId = u.UserId 
-				FROM #TEMP_SOURCE tmp
-				INNER JOIN [dbo].[User] u ON LOWER(u.Email) = LOWER(tmp.UserEmail)
+				IF (@NoMatchedUserFromJson IS NOT NULL)
+                BEGIN
+					RAISERROR (N'User with email: ''%s'' isn''t found', 16, 1, @NoMatchedUserFromJson);
+                END
 
-				IF (@UserId IS NULL)
-					THROW 50000, N'User isn''t found', 0;
+				-- Check if Course with CurrentCourseName exists
+				SELECT TOP 1 @NoMatchedCourseNameFromJson = tmp.[CurrentCourseName]
+				FROM #TEMP_SOURCE AS tmp
+				LEFT JOIN [dbo].[Course] AS c ON TRIM(UPPER(c.[Name])) = TRIM(UPPER(tmp.[CurrentCourseName]))
+				WHERE tmp.[CurrentCourseName] IS NOT NULL
+					AND c.[CourseId] IS NULL
 
-				/*Check that Course with CourseName exists*/
-				SELECT TOP 1 @CourseId = c.CourseId 
-				FROM #TEMP_SOURCE tmp
-				INNER JOIN [dbo].[Course] c ON c.[Name] = tmp.CurrentCourseName
-
-				IF (@CourseId IS NULL)
-					THROW 50000, N'Course isn''t found', 0;
+				IF (@NoMatchedCourseNameFromJson IS NOT NULL)
+                BEGIN
+					RAISERROR (N'Course with name: ''%s'' isn''t found', 16, 1, @NoMatchedCourseNameFromJson);
+                END
 
 				-- Settings
 				MERGE INTO [dbo].[Settings] tgt
 				USING (
 					SELECT DISTINCT 
-						 @UserId AS [UserId]
+						 u.[UserId]
 						,N'CurrentCourseName' AS [SettingName]
 						,tmp.[CurrentCourseName] AS [SettingValue]
-					FROM #TEMP_SOURCE AS tmp) src ON (src.[SettingName] = tgt.[SettingName]
-						AND src.[UserId] = tgt.[UserId])
+					FROM #TEMP_SOURCE AS tmp
+					INNER JOIN [dbo].[User] AS u ON TRIM(UPPER(u.[Email])) = TRIM(UPPER(tmp.[UserEmail]))) src ON src.[SettingName] = tgt.[SettingName]
+						AND src.[UserId] = tgt.[UserId]
 				WHEN MATCHED THEN
 				UPDATE SET
 					 tgt.[SettingValue] = src.[SettingValue]
@@ -85,5 +94,4 @@ IF ISJSON(@json) > 0
     END
 	ELSE
 		THROW 50000, N'JSON isn''t correct', 0;
-		
 END

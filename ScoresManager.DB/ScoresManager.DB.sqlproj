@@ -103,5 +103,7 @@
     <Build Include="dbo\Tables\Settings.sql" />
     <Build Include="dbo\Views\vw_Settings.sql" />
     <Build Include="dbo\Stored Procedures\usp_Settings_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_TaskSubTask_BulkInsert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CourseStaff_Insert.sql" />
   </ItemGroup>
 </Project>
