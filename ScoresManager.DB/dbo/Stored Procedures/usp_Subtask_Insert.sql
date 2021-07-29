@@ -8,13 +8,15 @@
 
 
 
+
 -- =============================================
 -- Author:			Sergei Boikov
 -- Create Date:		2021-01-21
+-- Modify Date:		2021-07-29
 -- Description: Load information about Subtask from JSON. Value is BonusCode
--- Format JSON: N'{"Bonuses":[{"Value":"Read"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"TaskId":1}' 
+-- Format JSON: N'{"Bonuses":[{"Value":"Read"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"SubTaskMaxScore":12.5,"TaskId":1}' 
 
---	Example. EXEC [dbo].[usp_Subtask_Insert] @json = N'{"Bonuses":[{"Value":"Read"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"TaskId":1}' 
+--	Example. EXEC [dbo].[usp_Subtask_Insert] @json = N'{"Bonuses":[{"Value":"Read"},{"Value":"Aliases"}],"SubTaskDescription":"Create T-SQL script1","SubTaskName":"Subtask.03.06","SubTaskTopicId":12,"SubTaskMaxScore":12.5,"TaskId":1}' 
 
 -- =============================================
 CREATE PROCEDURE [dbo].[usp_SubTask_Insert]
@@ -46,6 +48,7 @@ IF ISJSON(@json) > 0
                         ,SubTaskName		NVARCHAR(250)   '$.SubTaskName'
                         ,SubTaskDescription NVARCHAR(250)   '$.SubTaskDescription'
                         ,SubTaskTopicId     SMALLINT		'$.SubTaskTopicId'
+						,SubTaskMaxScore    NUMERIC(8,2)	'$.SubTaskMaxScore'
 						,Bonuses			NVARCHAR(MAX)	'$.Bonuses'				AS JSON
                 ) AS rootL
 				OUTER APPLY OPENJSON(Bonuses)
@@ -73,6 +76,7 @@ IF ISJSON(@json) > 0
 						,tmp.[SubTaskName]
 						,tmp.[SubTaskDescription]
 						,tmp.[SubTaskTopicId] 
+						,tmp.[SubTaskMaxScore]
 					FROM #TEMP_SOURCE AS tmp
 					WHERE tmp.[SubTaskName] IS NOT NULL) src ON (src.[SubTaskName] = tgt.[Name] 
 						AND src.[TaskId] = tgt.[TaskId])
@@ -80,6 +84,7 @@ IF ISJSON(@json) > 0
 				UPDATE SET
 					 tgt.[Description] = src.[SubTaskDescription]
 					,tgt.[TopicId] = src.[SubTaskTopicId]
+					,tgt.[MaxScore] = src.[SubTaskMaxScore]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
@@ -87,12 +92,14 @@ IF ISJSON(@json) > 0
 					,[Name]
 					,[Description]
 					,[TopicId]
+					,[MaxScore]
 				) VALUES
 				(
 					 src.[TaskId]
 					,src.[SubTaskName]
 					,src.[SubTaskDescription]
 					,src.[SubTaskTopicId]
+					,src.[SubTaskMaxScore]
 				)
 				OUTPUT Inserted.SubTaskId, Inserted.[Name], $ACTION
 				INTO #TEMP_SUBTASK_RESULT;

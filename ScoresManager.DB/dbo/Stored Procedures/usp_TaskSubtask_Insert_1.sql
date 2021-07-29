@@ -2,21 +2,24 @@
 
 
 
+
+
 -- =============================================
 -- Author:			Sergei Boikov
 -- Create Date:		2020-12-28
+-- Modify Date:		2021-07-29
 -- Description: Load information about Task and Subtasks from JSON
 /* Format JSON: N'{"CourseName": "MSBI.DEV.S20", "TaskName": "MSBI.DEV.Task.164", "TaskDescription": "SSIS.Part.5", "TaskTopic": "SSIS.Part.5", 
 				  "Subtasks": [ 
-								 {"SubTaskName": "Subtask.164.01", "SubTaskDescription": "SSIS project development", "SubTaskTopic": "SSIS", "Bonuses":["Readability", "SARG"]} 
-								,{"SubTaskName": "Subtask.164.02", "SubTaskDescription": "SSIS project deployment", "SubTaskTopic": "SSIS", "Bonuses":["Readability", "SARG"]}			
+								 {"SubTaskName": "Subtask.164.01", "SubTaskDescription": "SSIS project development", "SubTaskTopic": "SSIS", "SubTaskMaxScore": 12.5, "Bonuses":["Readability", "SARG"]} 
+								,{"SubTaskName": "Subtask.164.02", "SubTaskDescription": "SSIS project deployment", "SubTaskTopic": "SSIS", "SubTaskMaxScore": 12.5, "Bonuses":["Readability", "SARG"]}			
 							  ]
 				  }' 
 */
 /*	Example 1. Add Task and Subtasks: EXEC [dbo].[usp_TaskSubtask_Insert] @json = N'{"CourseName": "MSBI.DEV.S20", "TaskName": "MSBI.DEV.Task.164", "TaskDescription": "SSIS.Part.5", "TaskTopic": "SSIS.Part.5", 
 														  "Subtasks": [ 
-																		 {"SubTaskName": "Subtask.164.01", "SubTaskDescription": "SSIS project development", "SubTaskTopic": "SSIS", "Bonuses":["Readability", "SARG"]} 
-																		,{"SubTaskName": "Subtask.164.02", "SubTaskDescription": "SSIS project deployment", "SubTaskTopic": "SSIS", "Bonuses":["Readability", "SARG"]}			
+																		 {"SubTaskName": "Subtask.164.01", "SubTaskDescription": "SSIS project development", "SubTaskTopic": "SSIS", "SubTaskMaxScore": 12.5, "Bonuses":["Readability", "SARG"]} 
+																		,{"SubTaskName": "Subtask.164.02", "SubTaskDescription": "SSIS project deployment", "SubTaskTopic": "SSIS", "SubTaskMaxScore": 12.5, "Bonuses":["Readability", "SARG"]}			
 																	  ]
 														  }' 
 														  
@@ -33,6 +36,7 @@ BEGIN
 	SET NOCOUNT ON;
 	DECLARE		@NoMatchedBonusFromJson				NVARCHAR(250),
 				@NoMatchedTaskTopicFromJson			NVARCHAR(250),
+				@NoMatchedCourseFromJson			NVARCHAR(250),
 				@NoMatchedSubTaskTopicFromJson		NVARCHAR(250)
 
 IF ISJSON(@json) > 0
@@ -60,6 +64,7 @@ IF ISJSON(@json) > 0
                          SubTaskName		NVARCHAR(250)   '$.SubTaskName'
                         ,SubTaskDescription NVARCHAR(250)   '$.SubTaskDescription'
                         ,SubTaskTopic       NVARCHAR(250)   '$.SubTaskTopic'
+						,SubTaskMaxScore    NVARCHAR(250)   '$.SubTaskMaxScore'
 						,Bonuses			NVARCHAR(MAX)	'$.Bonuses'				AS JSON
                 ) AS liefL ON 1 = 1
 				OUTER APPLY OPENJSON(Bonuses)
@@ -87,6 +92,18 @@ IF ISJSON(@json) > 0
 				IF (@NoMatchedSubTaskTopicFromJson IS NOT NULL)
                 BEGIN
 					RAISERROR (N'SubTaskTopic: ''%s'' isn''t found', 16, 1, @NoMatchedSubTaskTopicFromJson);
+                END
+
+				-- Check Course
+				SELECT TOP 1 @NoMatchedCourseFromJson = tmp.[CourseName]
+				FROM #TEMP_SOURCE AS tmp
+				LEFT JOIN [dbo].[Course] AS c ON TRIM(UPPER(c.[Name])) = TRIM(UPPER(tmp.[CourseName]))
+				WHERE tmp.[CourseName] IS NOT NULL
+					AND c.[Name] IS NULL
+
+				IF (@NoMatchedCourseFromJson IS NOT NULL)
+                BEGIN
+					RAISERROR (N'Course: ''%s'' isn''t found', 16, 1, @NoMatchedCourseFromJson);
                 END
 
 				--Task
@@ -129,6 +146,7 @@ IF ISJSON(@json) > 0
 						,tmp.[SubTaskName]
 						,tmp.[SubTaskDescription]
 						,stt.[TopicId] 
+						,tmp.[SubTaskMaxScore]
 					FROM #TEMP_SOURCE AS tmp
 					INNER JOIN [dbo].[Topic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
 					WHERE tmp.[SubTaskName] IS NOT NULL) src ON (src.[SubTaskName] = tgt.[Name] 
@@ -137,6 +155,7 @@ IF ISJSON(@json) > 0
 				UPDATE SET
 					 tgt.[Description] = src.[SubTaskDescription]
 					,tgt.[TopicId] = src.[TopicId]
+					,tgt.[MaxScore] = src.[SubTaskMaxScore]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
@@ -144,12 +163,14 @@ IF ISJSON(@json) > 0
 					,[Name]
 					,[Description]
 					,[TopicId]
+					,[MaxScore]
 				) VALUES
 				(
 					 src.[TaskId]
 					,src.[SubTaskName]
 					,src.[SubTaskDescription]
 					,src.[TopicId]
+					,src.[SubTaskMaxScore]
 				)
 				OUTPUT Inserted.SubTaskId, Inserted.[Name], $ACTION
 				INTO #TEMP_SUBTASK_RESULT;

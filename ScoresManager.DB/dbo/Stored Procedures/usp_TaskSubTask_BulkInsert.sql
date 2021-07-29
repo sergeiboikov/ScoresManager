@@ -3,12 +3,14 @@
 
 
 
+
 -- =============================================
 -- Author:			Sergei Boikov
 -- Create Date:		2021-07-26
+-- Modify Date:		2021-07-29
 -- Description: Load information about Task and Subtasks from JSON
--- Format JSON: N'[{"CourseName": "BI.Lab.Cross.2021", "TaskName": "Intro.Test", "TaskDescription": "Initial test for mentees", "TaskTopic": "Module #1: Intro", "SubTaskName": "Test", "SubTaskDescription": "Test", "SubTaskTopic": "DB Basics"}]' 
--- Example: EXEC [dbo].[usp_TaskSubTask_BulkInsert] @json = N'[{"CourseName": "BI.Lab.Cross.2021", "TaskName": "Intro.Test", "TaskDescription": "Initial test for mentees", "TaskTopic": "Module #1: Intro", "SubTaskName": "Test", "SubTaskDescription": "Test", "SubTaskTopic": "DB Basics"}]' 
+-- Format JSON: N'[{"CourseName": "BI.Lab.Cross.2021", "TaskName": "Intro.Test", "TaskDescription": "Initial test for mentees", "TaskTopic": "Module #1: Intro", "SubTaskName": "Test", "SubTaskDescription": "Test", "SubTaskTopic": "DB Basics", "SubTaskMaxScore": 12.5}]' 
+-- Example: EXEC [dbo].[usp_TaskSubTask_BulkInsert] @json = N'[{"CourseName": "BI.Lab.Cross.2021", "TaskName": "Intro.Test", "TaskDescription": "Initial test for mentees", "TaskTopic": "Module #1: Intro", "SubTaskName": "Test", "SubTaskDescription": "Test", "SubTaskTopic": "DB Basics", "SubTaskMaxScore": 12.5}]' 
 -- =============================================
 
 CREATE PROCEDURE [dbo].[usp_TaskSubTask_BulkInsert]
@@ -39,6 +41,7 @@ IF ISJSON(@json) > 0
 						,SubTaskName		NVARCHAR(250)   '$.SubTaskName'
                         ,SubTaskDescription NVARCHAR(250)   '$.SubTaskDescription'
                         ,SubTaskTopic       NVARCHAR(250)   '$.SubTaskTopic'
+						,SubTaskMaxScore    NVARCHAR(250)   '$.SubTaskMaxScore'
                 ) AS RootL;
 
 				-- Check Course names
@@ -128,6 +131,7 @@ IF ISJSON(@json) > 0
 						  ,tmp.[SubTaskName]
 						  ,tmp.[SubTaskDescription]
 						  ,stt.[TopicId] 
+						  ,tmp.[SubTaskMaxScore]
 					FROM #TEMP_SOURCE AS tmp
 					INNER JOIN [dbo].[Topic] AS stt ON TRIM(UPPER(stt.[Name])) = TRIM(UPPER(tmp.[SubTaskTopic]))
 					INNER JOIN [dbo].[Task] AS t ON TRIM(UPPER(t.[Name])) = TRIM(UPPER(tmp.[TaskName]))
@@ -137,6 +141,7 @@ IF ISJSON(@json) > 0
 				UPDATE SET
 					 tgt.[Description] = src.[SubTaskDescription]
 					,tgt.[TopicId] = src.[TopicId]
+					,tgt.[MaxScore] = src.[SubTaskMaxScore]
 					,tgt.[sysChangedAt] = getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
@@ -144,12 +149,14 @@ IF ISJSON(@json) > 0
 					,[Name]
 					,[Description]
 					,[TopicId]
+					,[MaxScore]
 				) VALUES
 				(
 					 src.[TaskId]
 					,src.[SubTaskName]
 					,src.[SubTaskDescription]
 					,src.[TopicId]
+					,src.[SubTaskMaxScore]
 				);
 				
 				DROP TABLE #TEMP_SOURCE;

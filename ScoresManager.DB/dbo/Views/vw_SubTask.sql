@@ -10,6 +10,7 @@ SELECT DISTINCT
 		, st. [SubTaskId]		
 		, st. [Name]			AS [SubTaskName]         
 		, st. [Description]		AS [SubTaskDesc]
+		, st. [MaxScore]		AS [MaxScore]
 		,stt.TopicId			AS [SubTaskTopicId]
 		,stt.[Name]				AS [SubTaskTopicName]
 FROM [dbo].[SubTask] st
