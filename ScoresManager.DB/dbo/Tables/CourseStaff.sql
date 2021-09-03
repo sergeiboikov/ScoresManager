@@ -3,6 +3,7 @@
     [CourseId]      INT      NOT NULL,
     [UserId]        INT      NOT NULL,
     [UserTypeId]    SMALLINT NOT NULL,
+    [StatusId]      SMALLINT NULL,
     [sysCreatedAt]  DATETIME CONSTRAINT [DF_CourseStaff_sysCreatedAt] DEFAULT (getutcdate()) NULL,
     [sysChangedAt]  DATETIME CONSTRAINT [DF_CourseStaff_sysChangedAt] DEFAULT (getutcdate()) NULL,
     [sysCreatedBy]  INT      CONSTRAINT [DF_CourseStaff_sysCreatedBy] DEFAULT ((-1)) NULL,
@@ -11,6 +12,7 @@
     CONSTRAINT [FK_CourseStaff_Course_CourseId] FOREIGN KEY ([CourseId]) REFERENCES [dbo].[Course] ([CourseId]),
     CONSTRAINT [FK_CourseStaff_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([UserId]),
     CONSTRAINT [FK_CourseStaff_UserType_UserTypeId] FOREIGN KEY ([UserTypeId]) REFERENCES [dbo].[UserType] ([UserTypeId]),
+    CONSTRAINT [FK_CourseStaff_Status_StatusId] FOREIGN KEY ([StatusId]) REFERENCES [dbo].[Status] ([StatusId]),
     CONSTRAINT [UC_CourseStaff_CourseId_UserId] UNIQUE NONCLUSTERED ([CourseId] ASC, [UserId] ASC)
 );
 
