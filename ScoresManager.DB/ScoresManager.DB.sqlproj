@@ -61,6 +61,7 @@
     <Folder Include="student\" />
     <Folder Include="student\Views\" />
     <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -105,5 +106,7 @@
     <Build Include="dbo\Stored Procedures\usp_CourseStaff_Insert.sql" />
     <Build Include="dbo\Tables\Status.sql" />
     <Build Include="dbo\Views\vw_Status.sql" />
+    <Build Include="dbo\Views\vw_ScoresDashboardAllCourses.sql" />
+    <Build Include="dbo\Functions\udf_get_StatusId_by_Name.sql" />
   </ItemGroup>
 </Project>
