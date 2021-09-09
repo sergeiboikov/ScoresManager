@@ -108,5 +108,6 @@
     <Build Include="dbo\Views\vw_Status.sql" />
     <Build Include="dbo\Views\vw_ScoresDashboardAllCourses.sql" />
     <Build Include="dbo\Functions\udf_get_StatusId_by_Name.sql" />
+    <Build Include="dbo\Views\vw_Student.sql" />
   </ItemGroup>
 </Project>
