@@ -84,18 +84,6 @@ IF ISJSON(@json) > 0
 					RAISERROR (N'SubTask with name: ''%s'' isn''t found', 16, 1, @NoMatchedSubTaskNameFromJson);
                 END
 
-				-- Check ConnectionString
-				SELECT TOP 1 @NoMatchedConnectionStringFromJson = tmp.[ConnectionString]
-				FROM #TEMP_SOURCE AS tmp
-					LEFT JOIN [dbo].[Connection] AS C ON TRIM(UPPER(C.[ConnectionString])) = TRIM(UPPER(tmp.[ConnectionString]))
-				WHERE tmp.[ConnectionString] IS NOT NULL
-					AND C.[ConnectionId] IS NULL
-				
-				IF (@NoMatchedConnectionStringFromJson IS NOT NULL)
-                BEGIN
-					RAISERROR (N'Connection String with name: ''%s'' isn''t found', 16, 1, @NoMatchedConnectionStringFromJson);
-                END
-
 				-- Check CheckScriptTypeName
 				SELECT TOP 1 @NoMatchedCheckScriptTypeNameFromJson = tmp.[CheckScriptTypeName]
 				FROM #TEMP_SOURCE AS tmp
@@ -120,6 +108,28 @@ IF ISJSON(@json) > 0
 					RAISERROR (N'ConnectionType with name: ''%s'' isn''t found', 16, 1, @NoMatchedConnectionTypeNameFromJson);
                 END
 
+				-- Check ConnectionString
+				
+				MERGE INTO [dbo].[Connection] tgt
+				USING (
+						SELECT DISTINCT tmp.[ConnectionString]
+										,CT.[ConnectionTypeId]
+						FROM #TEMP_SOURCE AS tmp
+							LEFT  JOIN  [dbo].[Connection]		AS C  ON TRIM(UPPER(C.[ConnectionString])) = TRIM(UPPER(tmp.[ConnectionString]))
+							INNER JOIN [dbo].[ConnectionType]	AS CT ON TRIM(UPPER(CT.[Name]))			   = TRIM(UPPER(tmp.[ConnectionTypeName]))
+						WHERE tmp.[ConnectionString] IS NOT NULL
+							AND C.[ConnectionId] IS NULL
+						) src ON TRIM(UPPER(src.[ConnectionString])) = TRIM(UPPER(tgt.[ConnectionString]))
+					WHEN NOT MATCHED BY TARGET THEN
+					INSERT  (
+						   		[ConnectionString]
+							  , [ConnectionTypeId]
+							)
+					VALUES (
+							  src.[ConnectionString]
+							, src.[ConnectionTypeId]
+							);
+
 				-- CheckScript insert
 				MERGE INTO [dbo].[CheckScript] tgt
 				USING (
@@ -131,6 +141,7 @@ IF ISJSON(@json) > 0
 						INNER JOIN [dbo].[Connection]		AS C	ON TRIM(UPPER(C.[ConnectionString]))	= TRIM(UPPER(tmp.[ConnectionString]))
 						INNER JOIN [dbo].[CheckScriptType]	AS CST	ON TRIM(UPPER(CST.[Name]))				= TRIM(UPPER(tmp.[CheckScriptTypeName]))
 						INNER JOIN [dbo].[ConnectionType]	AS CT	ON TRIM(UPPER(CT.[Name]))				= TRIM(UPPER(tmp.[ConnectionTypeName]))
+																		AND CT.[ConnectionTypeId]			= C.[ConnectionTypeId]
 					 ) src ON (TRIM(UPPER(src.[CheckScriptText])) = TRIM(UPPER(tgt.[Text])))
 				WHEN MATCHED THEN
 				UPDATE SET
