@@ -115,6 +115,8 @@
     <Build Include="dbo\Tables\CheckScriptType.sql" />
     <Build Include="dbo\Views\vw_CheckScript.sql" />
     <Build Include="dbo\Stored Procedures\usp_CheckScript_BulkInsert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_CheckScriptType_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\usp_ConnectionType_Insert.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ScoresManager.DB.refactorlog" />
