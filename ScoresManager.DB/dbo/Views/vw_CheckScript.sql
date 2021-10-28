@@ -8,8 +8,8 @@ SELECT  ST.[SubTaskId]
 	,	CST.[Name]			AS [CheckScriptTypeName]
 	,	C.[ConnectionString]
 	,	CT.[Name]			AS [ConnectionTypeName]
-FROM		   [dbo].[SubTask]			ST	
-	INNER JOIN [dbo].[CheckScript]		CS	ON CS.[CheckScriptId]	   = ST.[CheckScriptId]
+FROM		  [dbo].[SubTask]			ST	
+	INNER JOIN [dbo].[CheckScript]		CS	ON  CS.[CheckScriptId]	   = ST.[CheckScriptId]
 	INNER JOIN [dbo].[CheckScriptType]	CST ON CST.[CheckScriptTypeId] = CS.[CheckScriptTypeId]
-	INNER JOIN [dbo].[Connection]		C	ON C.[ConnectionId]		   = CS.[ConnectionId]
-	INNER JOIN [dbo].[ConnectionType]	CT	ON CT.[ConnectionTypeId]   = C.[ConnectionTypeId]
+	INNER JOIN [dbo].[Connection]		C	ON   C.[ConnectionId]	   = CS.[ConnectionId]
+	INNER JOIN [dbo].[ConnectionType]	CT	ON  CT.[ConnectionTypeId]  =  C.[ConnectionTypeId]

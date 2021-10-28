@@ -4,7 +4,7 @@
     [Name]          NVARCHAR (250) NOT NULL,
     [Description]   NVARCHAR (250) NOT NULL,
     [TopicId]       SMALLINT       NOT NULL,
-    [CheckScriptId] INT            NOT NULL,
+    [CheckScriptId] INT            NULL,
     [MaxScore]      NUMERIC  (8,2) NULL,
     [sysCreatedAt]  DATETIME       CONSTRAINT [DF_SubTask_sysCreatedAt] DEFAULT (getutcdate()) NULL,
     [sysChangedAt]  DATETIME       CONSTRAINT [DF_SubTask_sysChangedAt] DEFAULT (getutcdate()) NULL,
