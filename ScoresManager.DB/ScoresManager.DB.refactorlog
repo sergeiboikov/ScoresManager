@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="c3d7e53a-65e6-47d2-b69c-cdf491f035ae" ChangeDateTime="10/20/2021 07:57:15">
+    <Property Name="ElementName" Value="[dbo].[CheckScript].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CheckScript]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CheckScriptId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="788478e8-e776-4d52-86d5-d967e040a216" ChangeDateTime="10/20/2021 08:02:13">
+    <Property Name="ElementName" Value="[dbo].[ConnectionType].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ConnectionType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ConnectionTypeId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6c19b41c-d960-4213-8501-9e3fe1f7e2e6" ChangeDateTime="10/20/2021 08:08:36">
+    <Property Name="ElementName" Value="[dbo].[Table1].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Table1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ConnectionId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b7f25735-7f24-4cd5-a2fe-59c9e56918a3" ChangeDateTime="10/20/2021 08:09:22">
+    <Property Name="ElementName" Value="[dbo].[Table1].[ConnectionT]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Table1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ConnectionTypeId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="de3e378d-828c-4236-8280-5e2d79790470" ChangeDateTime="10/20/2021 08:12:10">
+    <Property Name="ElementName" Value="[dbo].[Table1].[sysCha DEFAULT (getutcdate())ngedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Table1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="sysChangedBy" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="399e63a1-1b4e-460f-a543-9bff508b4a2f" ChangeDateTime="10/20/2021 08:31:48">
+    <Property Name="ElementName" Value="[dbo].[CheckScriptType].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CheckScriptType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CheckScriptTypeId" />
+  </Operation>
+</Operations>
