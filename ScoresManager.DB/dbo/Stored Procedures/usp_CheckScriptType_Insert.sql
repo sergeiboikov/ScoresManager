@@ -2,8 +2,8 @@
 -- Author:			Elyana Pogosyan
 -- Create Date:		2021-10-26
 -- Description: Load information for CheckScriptType from JSON
--- Format JSON: N'["CheckScriptTypeName":"SQL"]' 
---  Example: EXEC [dbo].[usp_CheckScriptType_Insert] @json = N'["CheckScriptTypeName":"SQL"]' 
+-- Format JSON: N'[{"CheckScriptTypeName":"SQL"}]' 
+--  Example: EXEC [dbo].[usp_CheckScriptType_Insert] @json = N'[{"CheckScriptTypeName":"SQL"}]' 
 
 -- =============================================
 
