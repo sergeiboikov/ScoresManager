@@ -85,9 +85,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         else:
             subtask_id = req_body.get('subtask_id')
 
-    if subtask_id:
+    if not query_user:
+        try:
+            req_body = req.get_json()
+        except ValueError:
+            pass
+        else:
+            query_user = req_body.get('query_user')
+
+    if subtask_id and query_user:
         check_script_odbc_conn = ''
         compare_result = ''
+        # Get info about Subtask from ScoresManager db
         check_script_info = get_check_script_info(subtask_id)
         check_script_text = check_script_info['CheckScriptText']
         check_script_conn_str = check_script_info['ConnectionString']
@@ -97,10 +106,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             check_script_odbc_conn = get_odbc_conn_str_from_key_vault(check_script_conn_str)
         if check_script_type == 'SQL':
             compare_result = compare_sql_queries(check_script_odbc_conn, query_user, check_script_text)
-
-        return func.HttpResponse(f"{subtask_id}; {query_user}")
+        return func.HttpResponse(f"{compare_result}")
     else:
         return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+             "Pass a subtask_id and a query_user in the query string or in the request body.",
              status_code=200
         )
