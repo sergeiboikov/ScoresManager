@@ -48,24 +48,34 @@ def compare_sql_queries(connection: str, user_query: str, check_query: str) -> s
     else:
         return success
 
-def get_template(subtask_id: str):
-    pass
+def get_check_script_info(subtask_id: str) -> dict:
+    """
+    Get info about check script from ScoresManager DB
+
+    :param subtask_id: SubTaskId
+    :type subtask_id: str
+    :return: Dictionary in format: {CheckScriptText: Value, ConnectionString: Value, CheckScriptTypeName: Value, ConnectionTypeName: Value}
+    :rtype: dict
+    """
+    return {'CheckScriptText': 'SELECT 1', 'ConnectionString': 'AdventureWorks2019ConnectionStringFromKeyVault', 'CheckScriptTypeName': 'SQL', 'ConnectionTypeName': 'ODBC'}
+
+def get_odbc_conn_str_from_key_vault(app_setting_name: str) -> str:
+    """
+    The function return ODBC connection string from Azure KeyVault. Link to the Azure KeysVault secret is
+    get from App configuration of Azure Function
+
+    :param app_setting_name: App configuration name
+    :type app_setting_name: str
+    :return: ODBC connection string
+    :rtype: str
+    """
+    return os.getenv(app_setting_name)
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     subtask_id = req.params.get('subtask_id')
     query_user = req.params.get('query_user')
-
-    query_user = """
-    SELECT 1
-    """
-
-    query_check = """
-    SELECT 1
-    """
-
-    compare_result = compare_sql_queries(db_connection_string, query_user, query_check)
 
     if not subtask_id:
         try:
@@ -76,7 +86,19 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             subtask_id = req_body.get('subtask_id')
 
     if subtask_id:
-        return func.HttpResponse(f"{compare_result}")
+        check_script_odbc_conn = ''
+        compare_result = ''
+        check_script_info = get_check_script_info(subtask_id)
+        check_script_text = check_script_info['CheckScriptText']
+        check_script_conn_str = check_script_info['ConnectionString']
+        check_script_type = check_script_info['CheckScriptTypeName']
+        check_script_conn_type = check_script_info['ConnectionTypeName']
+        if check_script_conn_type == 'ODBC':
+            check_script_odbc_conn = get_odbc_conn_str_from_key_vault(check_script_conn_str)
+        if check_script_type == 'SQL':
+            compare_result = compare_sql_queries(check_script_odbc_conn, query_user, check_script_text)
+
+        return func.HttpResponse(f"{subtask_id}; {query_user}")
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
