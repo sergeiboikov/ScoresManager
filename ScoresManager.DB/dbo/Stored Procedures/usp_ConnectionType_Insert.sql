@@ -2,8 +2,8 @@
 -- Author:			Elyana Pogosyan
 -- Create Date:		2021-10-26
 -- Description: Load information for CheckScriptType from JSON
--- Format JSON: N'[{"ConnectionName":"ODBC", "ConnectionDescription":"Open Database Connectivity"}]' 
---  Example: EXEC [dbo].[usp_ConnectionType_Insert] @json = N'[{"ConnectionName":"ODBC", "ConnectionDescription":"Open Database Connectivity"}]'  
+-- Format JSON: N'[{"ConnectionTypeName":"ODBC", "ConnectionTypeDescription":"Open Database Connectivity"}]' 
+--  Example: EXEC [dbo].[usp_ConnectionType_Insert] @json = N'[{"ConnectionTypeName":"ODBC", "ConnectionTypeDescription":"Open Database Connectivity"}]'  
 
 -- =============================================
 
