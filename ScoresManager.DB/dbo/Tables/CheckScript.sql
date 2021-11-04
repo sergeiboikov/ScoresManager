@@ -2,7 +2,7 @@
 (
 	[CheckScriptId]     INT IDENTITY (1, 1) NOT NULL, 
     [Text]              NVARCHAR(MAX)       NOT NULL, 
-    [Description]       NVARCHAR(250)       NOT NULL, 
+    [Description]       NVARCHAR(MAX)       NOT NULL, 
     [ConnectionId]      INT                 NOT NULL, 
     [CheckScriptTypeId] SMALLINT            NOT NULL, 
     [sysCreatedAt]      DATETIME       CONSTRAINT [DF_CheckScript_sysCreatedAt] DEFAULT (getutcdate()) NULL,
