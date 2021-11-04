@@ -26,21 +26,21 @@ IF ISJSON(@json) > 0
 			    INTO #TEMP_SOURCE
 				FROM OPENJSON(@json)
                 WITH (
-                         ConnectionName			 NVARCHAR(250)	 '$.ConnectionName'
-						,ConnectionDescription	 NVARCHAR(250)	 '$.ConnectionDescription'
+                         ConnectionTypeName			 NVARCHAR(250)	 '$.ConnectionTypeName'
+						,ConnectionTypeDescription	 NVARCHAR(250)	 '$.ConnectionTypeDescription'
                 ) AS RootL;
 
 				-- ConnectionType insert
 
 				MERGE INTO [dbo].[ConnectionType] tgt
 				USING (
-						SELECT DISTINCT  tmp.[ConnectionName]
-										,tmp.[ConnectionDescription]
+						SELECT DISTINCT  tmp.[ConnectionTypeName]
+										,tmp.[ConnectionTypeDescription]
 						FROM #TEMP_SOURCE AS tmp
-					 ) src ON (TRIM(UPPER(src.[ConnectionName])) = TRIM(UPPER(tgt.[Name])))
+					 ) src ON (TRIM(UPPER(src.[ConnectionTypeName])) = TRIM(UPPER(tgt.[Name])))
 				WHEN MATCHED THEN
 				UPDATE SET
-					 tgt.[Description]	= src.[ConnectionDescription]
+					 tgt.[Description]	= src.[ConnectionTypeDescription]
 					,tgt.[sysChangedAt]	= getutcdate()
 				WHEN NOT MATCHED THEN
 				INSERT (
@@ -48,8 +48,8 @@ IF ISJSON(@json) > 0
 					,[Description]
 				) VALUES
 				(
-					 src.[ConnectionName]
-					,src.[ConnectionDescription]
+					 src.[ConnectionTypeName]
+					,src.[ConnectionTypeDescription]
 				);
 
 
