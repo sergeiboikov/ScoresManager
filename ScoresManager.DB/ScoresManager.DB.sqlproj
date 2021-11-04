@@ -118,7 +118,8 @@
     <Build Include="dbo\Stored Procedures\usp_CheckScript_BulkInsert.sql" />
     <Build Include="dbo\Stored Procedures\usp_CheckScriptType_Insert.sql" />
     <Build Include="dbo\Stored Procedures\usp_ConnectionType_Insert.sql" />
-	<None Include="PostDeployment\Script.Seed.CheckScriptType.sql" />
+    <Build Include="dbo\Functions\udf_get_CheckScript_by_SubTaskId.sql" />
+	  <None Include="PostDeployment\Script.Seed.CheckScriptType.sql" />
     <None Include="PostDeployment\Script.Seed.ConnectionType.sql" />
   </ItemGroup>
   <ItemGroup>
