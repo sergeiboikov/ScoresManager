@@ -3,6 +3,7 @@ import azure.functions as func
 import pyodbc
 import pandas as pd
 import os
+import json 
 
 # access sensitive credentials from Azure Key Vault (Application settings)
 scoresmanager_db_connection_string = os.getenv('ScoresManagerDBConnectionStringFromKeyVault_DEV')
@@ -48,16 +49,23 @@ def compare_sql_queries(connection: str, user_query: str, check_query: str) -> s
     else:
         return success
 
-def get_check_script_info(subtask_id: str) -> dict:
+def get_check_script_info(con: str, subtask_id: str) -> dict:
     """
     Get info about check script from ScoresManager DB
 
+    :param con: Connection to ScoresManager database
+    :type con: str
     :param subtask_id: SubTaskId
     :type subtask_id: str
     :return: Dictionary in format: {CheckScriptText: Value, ConnectionString: Value, CheckScriptTypeName: Value, ConnectionTypeName: Value}
     :rtype: dict
     """
-    return {'CheckScriptText': 'SELECT 1', 'ConnectionString': 'AdventureWorks2019ConnectionStringFromKeyVault', 'CheckScriptTypeName': 'SQL', 'ConnectionTypeName': 'ODBC'}
+    cnxn = pyodbc.connect(con)
+    curs = cnxn.cursor()
+    curs.execute(f'SELECT [dbo].[udf_get_CheckScript_by_SubTaskId] ({subtask_id})')
+    result = curs.fetchone()
+    # Expected result: {'CheckScriptText': 'SELECT 1', 'ConnectionString': 'AdventureWorks2019ConnectionStringFromKeyVault', 'CheckScriptTypeName': 'SQL', 'ConnectionTypeName': 'ODBC'}
+    return json.loads(result[0])[0]
 
 def get_odbc_conn_str_from_key_vault(app_setting_name: str) -> str:
     """
@@ -97,7 +105,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         check_script_odbc_conn = ''
         compare_result = ''
         # Get info about Subtask from ScoresManager db
-        check_script_info = get_check_script_info(subtask_id)
+        check_script_info = get_check_script_info(scoresmanager_db_connection_string, subtask_id)
         check_script_text = check_script_info['CheckScriptText']
         check_script_conn_str = check_script_info['ConnectionString']
         check_script_type = check_script_info['CheckScriptTypeName']
