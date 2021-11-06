@@ -39,7 +39,7 @@ IF ISJSON(@json) > 0
                         ,TaskDescription    NVARCHAR(100)   '$.TaskDescription'
                         ,TaskTopic			NVARCHAR(250)   '$.TaskTopic'
 						,SubTaskName		NVARCHAR(250)   '$.SubTaskName'
-                        ,SubTaskDescription NVARCHAR(250)   '$.SubTaskDescription'
+                        ,SubTaskDescription NVARCHAR(MAX)   '$.SubTaskDescription'
                         ,SubTaskTopic       NVARCHAR(250)   '$.SubTaskTopic'
 						,SubTaskMaxScore    NVARCHAR(250)   '$.SubTaskMaxScore'
                 ) AS RootL;

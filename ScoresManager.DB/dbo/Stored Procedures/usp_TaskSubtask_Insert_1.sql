@@ -62,7 +62,7 @@ IF ISJSON(@json) > 0
                 LEFT JOIN OPENJSON(@json, N'$.Subtasks')
                 WITH (
                          SubTaskName		NVARCHAR(250)   '$.SubTaskName'
-                        ,SubTaskDescription NVARCHAR(250)   '$.SubTaskDescription'
+                        ,SubTaskDescription NVARCHAR(MAX)   '$.SubTaskDescription'
                         ,SubTaskTopic       NVARCHAR(250)   '$.SubTaskTopic'
 						,SubTaskMaxScore    NVARCHAR(250)   '$.SubTaskMaxScore'
 						,Bonuses			NVARCHAR(MAX)	'$.Bonuses'				AS JSON
