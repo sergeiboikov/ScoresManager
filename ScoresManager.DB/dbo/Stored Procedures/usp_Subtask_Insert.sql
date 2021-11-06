@@ -46,7 +46,7 @@ IF ISJSON(@json) > 0
                 WITH (
                          TaskId				INT				'$.TaskId'
                         ,SubTaskName		NVARCHAR(250)   '$.SubTaskName'
-                        ,SubTaskDescription NVARCHAR(250)   '$.SubTaskDescription'
+                        ,SubTaskDescription NVARCHAR(MAX)   '$.SubTaskDescription'
                         ,SubTaskTopicId     SMALLINT		'$.SubTaskTopicId'
 						,SubTaskMaxScore    NUMERIC(8,2)	'$.SubTaskMaxScore'
 						,Bonuses			NVARCHAR(MAX)	'$.Bonuses'				AS JSON
