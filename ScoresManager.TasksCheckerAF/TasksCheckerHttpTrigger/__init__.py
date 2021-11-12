@@ -28,8 +28,8 @@ def compare_sql_queries(connection: str, user_query: str, check_query: str) -> s
     try:
         df_user = pd.read_sql_query(user_query, cnxn)
     except Exception as ex:
-        print(ex.args[0])
-        return
+        errors.append(f'ERROR. Wrong syntax')
+        return errors
     df_check = pd.read_sql_query(check_query, cnxn)
     # Check row counts
     if len(df_user) != len(df_check):
