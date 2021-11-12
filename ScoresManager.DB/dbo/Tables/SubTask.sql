@@ -2,7 +2,7 @@
     [SubTaskId]     INT            IDENTITY (1, 1) NOT NULL,
     [TaskId]        INT            NOT NULL,
     [Name]          NVARCHAR (250) NOT NULL,
-    [Description]   NVARCHAR (250) NOT NULL,
+    [Description]   NVARCHAR (MAX) NOT NULL,
     [TopicId]       SMALLINT       NOT NULL,
     [CheckScriptId] INT            NULL,
     [MaxScore]      NUMERIC  (8,2) NULL,

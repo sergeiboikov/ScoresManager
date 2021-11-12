@@ -1,6 +1,8 @@
 ﻿-- =============================================
 -- Author:			Elyana Pogosyan
 -- Create Date:		2021-10-26
+-- Modified By:		Sergei Boikov
+-- Modified Date:	2021-10-31
 -- Description: Load information for CheckScriptType from JSON
 -- Format JSON: N'[{"CheckScriptTypeName":"SQL"}]' 
 --  Example: EXEC [dbo].[usp_CheckScriptType_Insert] @json = N'[{"CheckScriptTypeName":"SQL"}]' 
@@ -30,10 +32,19 @@ IF ISJSON(@json) > 0
                 ) AS RootL;
 
 				-- CheckScriptType insert
-
-				INSERT INTO [dbo].[CheckScriptType] (Name)
-				SELECT tmp.[CheckScriptTypeName]
-				FROM #TEMP_SOURCE tmp;
+				MERGE INTO [dbo].[CheckScriptType] tgt
+				USING (
+					SELECT tmp.[CheckScriptTypeName]
+					FROM #TEMP_SOURCE tmp
+				) src 
+					ON (TRIM(UPPER(src.[CheckScriptTypeName])) = TRIM(UPPER(tgt.[Name])))
+				WHEN NOT MATCHED BY TARGET THEN
+				INSERT (
+					 [Name]
+				) VALUES
+				(
+					 src.[CheckScriptTypeName]
+				);
 
 				DROP TABLE #TEMP_SOURCE;
             COMMIT TRANSACTION
