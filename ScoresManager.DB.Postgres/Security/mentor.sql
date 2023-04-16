@@ -1,5 +1,4 @@
-﻿CREATE SCHEMA [mentor]
-    AUTHORIZATION [dbo];
+﻿CREATE SCHEMA mentor AUTHORIZATION postgres;
 
 
 
