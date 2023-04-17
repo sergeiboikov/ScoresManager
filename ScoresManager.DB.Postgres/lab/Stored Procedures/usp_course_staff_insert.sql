@@ -41,7 +41,9 @@ BEGIN
     FROM temp_source AS tmp
     LEFT JOIN lab.course AS c ON TRIM(UPPER(c."name")) = TRIM(UPPER(tmp.course_name))
     WHERE tmp.course_name IS NOT NULL
-        AND c.course_id IS NULL;
+        AND c.course_id IS NULL
+    LIMIT 1;
+
     IF (no_matched_course_name_from_json IS NOT NULL)
     THEN
         RAISE EXCEPTION 'Course: ''%'' isn''t found', no_matched_course_name_from_json;
@@ -55,7 +57,9 @@ BEGIN
     FROM temp_source AS tmp
     LEFT JOIN lab.user_type AS ut ON TRIM(UPPER(ut."name")) = TRIM(UPPER(tmp.user_type))
     WHERE tmp.user_type IS NOT NULL
-        AND ut.user_type_id IS NULL;
+        AND ut.user_type_id IS NULL
+    LIMIT 1;
+
     IF (no_matched_user_type_from_json IS NOT NULL)
     THEN
         RAISE EXCEPTION 'User type:: ''%'' isn''t found', no_matched_user_type_from_json;
