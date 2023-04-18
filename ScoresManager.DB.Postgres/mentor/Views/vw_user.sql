@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_user AS
+﻿CREATE OR REPLACE VIEW mentor.vw_user AS
 SELECT    
     u.user_id,
     u."name"    AS username,

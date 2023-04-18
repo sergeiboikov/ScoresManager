@@ -4,10 +4,10 @@
 -- Modify Date:        2021-07-29
 -- Description: Load information about task and subtasks from JSON
 -- Format JSON: '{"course_name": "BI.Lab.Cross.2021", "task_name": "Intro.Test", "taskdescription": "Initial test for mentees", "task_topic": "Module #1: Intro", "subtask_name": "Test", "subtaskdescription": "Test", "subtask_topic": "DB Basics", "subtaskmax_score": 12.5}' 
--- Example: EXEC lab.usp_tasksubtask_bulk_insert jsn = '{"course_name": "BI.Lab.Cross.2021", "task_name": "Intro.Test", "taskdescription": "Initial test for mentees", "task_topic": "Module #1: Intro", "subtask_name": "Test", "subtaskdescription": "Test", "subtask_topic": "DB Basics", "subtaskmax_score": 12.5}' 
+-- Example: EXEC mentor.usp_tasksubtask_bulk_insert jsn = '{"course_name": "BI.Lab.Cross.2021", "task_name": "Intro.Test", "taskdescription": "Initial test for mentees", "task_topic": "Module #1: Intro", "subtask_name": "Test", "subtaskdescription": "Test", "subtask_topic": "DB Basics", "subtaskmax_score": 12.5}' 
 -- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_tasksubtask_bulk_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_tasksubtask_bulk_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 BEGIN

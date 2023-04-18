@@ -5,7 +5,7 @@
 -- Description: Load information about settings from JSON
 -- Format JSON: '{"user_email":"sergei_boikovepam.com", "Currentcourse_name":"BI.Lab.Cross.2021"}, {"user_email":"ivan_ivanovepam.com", "Currentcourse_name":"BI.Lab.Cross.2021"}' --    Example. EXEC lab.usp_settings_insert jsn = '{"user_email":"sergei_boikovepam.com", "Currentcourse_name":"BI.Lab.Cross.2021"}' -- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_settings_insert
+CREATE OR REPLACE PROCEDURE mentor.usp_settings_insert
 (
      jsn            TEXT
 )

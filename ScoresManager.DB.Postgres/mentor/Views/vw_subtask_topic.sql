@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_subtask_topic AS
+﻿CREATE OR REPLACE VIEW mentor.vw_subtask_topic AS
 SELECT      
     stt.topic_id,
     stt."name"    AS subtask_topic_name

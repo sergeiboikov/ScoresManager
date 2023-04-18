@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_topic AS
+﻿CREATE OR REPLACE VIEW mentor.vw_topic AS
 SELECT
     tt.topic_id,
     tt."name"                    AS topic_name,

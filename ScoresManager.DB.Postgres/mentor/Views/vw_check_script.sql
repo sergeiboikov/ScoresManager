@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_check_script AS 
+﻿CREATE OR REPLACE VIEW mentor.vw_check_script AS 
 SELECT  
     st.subtask_id,
     st."name"                 AS subtask_name,

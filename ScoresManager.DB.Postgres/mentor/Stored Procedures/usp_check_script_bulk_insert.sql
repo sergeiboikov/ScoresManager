@@ -3,9 +3,9 @@
 -- Author:      Sergei Boikov
 -- Create Date: 2023-04-08
 -- Description: Load information for check_script from JSON
--- CALL lab.usp_check_script_bulk_insert('{"course_name": "BI.Lab.Cross.2021","task_name": "ASQL.Homework_02","subtask_name": "subtask.01","check_script_text": "SELECT 1","check_script_desc": "Check script for subtask.01","check_script_type_name": "SQL","connection_string": "connection string","connection_type_name": "ODBC"}');
+-- CALL mentor.usp_check_script_bulk_insert('{"course_name": "BI.Lab.Cross.2021","task_name": "ASQL.Homework_02","subtask_name": "subtask.01","check_script_text": "SELECT 1","check_script_desc": "Check script for subtask.01","check_script_type_name": "SQL","connection_string": "connection string","connection_type_name": "ODBC"}');
 -- =============================================
-CREATE OR REPLACE PROCEDURE lab.usp_check_script_bulk_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_check_script_bulk_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 DECLARE     

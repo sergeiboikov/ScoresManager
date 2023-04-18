@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_subtask_bonus AS
+﻿CREATE OR REPLACE VIEW mentor.vw_subtask_bonus AS
 SELECT    
     stb.subtask_bonus_id,
     stb.subtask_id,

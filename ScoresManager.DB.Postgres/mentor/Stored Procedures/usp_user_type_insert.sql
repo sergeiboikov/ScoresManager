@@ -2,10 +2,10 @@
 -- Author:      Sergei Boikov
 -- Create Date: 2023-04-14
 -- Description: Load information for user_type from JSON
--- Example:     CALL lab.usp_user_type_insert('[{"user_type_name":"mentor", "user_type_description":"Mentor"}]');
+-- Example:     CALL mentor.usp_user_type_insert('[{"user_type_name":"mentor", "user_type_description":"Mentor"}]');
 -- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_user_type_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_user_type_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 BEGIN

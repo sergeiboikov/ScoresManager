@@ -2,10 +2,10 @@
 -- Author:      Sergei Boikov
 -- Create Date: 2023-04-14
 -- Description: Load information for check_script_type from JSON
--- Example:     CALL lab.usp_connection_type_insert('[{"connection_type_name":"ODBC", "connection_type_description":"Open Database Connectivity"}]');
+-- Example:     CALL mentor.usp_connection_type_insert('[{"connection_type_name":"ODBC", "connection_type_description":"Open Database Connectivity"}]');
 -- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_connection_type_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_connection_type_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 BEGIN

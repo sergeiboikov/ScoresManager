@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_bonus AS
+﻿CREATE OR REPLACE VIEW mentor.vw_bonus AS
 SELECT
 	b.bonus_id,
 	b."name"			AS bonus_name,

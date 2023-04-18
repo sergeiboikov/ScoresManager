@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_course_staff AS
+﻿CREATE OR REPLACE VIEW mentor.vw_course_staff AS
 SELECT     
     cs.course_staff_id,
     c.course_id,

@@ -10,17 +10,17 @@
                               
                   }' 
 */
-/*    Example 1. Add task and subtasks: EXEC lab.usp_tasksubtask_insert jsn = '{"course_name": "MSBI.DEV.S20", "task_name": "MSBI.DEV.task.164", "taskdescription": "SSIS.Part.5", "task_topic": "SSIS.Part.5", 
+/*    Example 1. Add task and subtasks: EXEC mentor.usp_tasksubtask_insert jsn = '{"course_name": "MSBI.DEV.S20", "task_name": "MSBI.DEV.task.164", "taskdescription": "SSIS.Part.5", "task_topic": "SSIS.Part.5", 
                                                           "subtasks":  
                                                                          {"subtask_name": "subtask.164.01", "subtaskdescription": "SSIS project development", "subtask_topic": "SSIS", "subtaskmax_score": 12.5, "bonuses":"readability", "sarg"} 
                                                                         ,{"subtask_name": "subtask.164.02", "subtaskdescription": "SSIS project deployment", "subtask_topic": "SSIS", "subtaskmax_score": 12.5, "bonuses":"readability", "sarg"}            
                                                                       
                                                           }' 
                                                           
-    Example 2. Add task without subtasks: EXEC lab.usp_tasksubtask_insert jsn = '{"course_name": "MSBI.DEV.S20", "task_name": "MSBI.DEV.task.164", "taskdescription": "SSIS.Part.5", "task_topic": "SSIS.Part.5"}'
+    Example 2. Add task without subtasks: EXEC mentor.usp_tasksubtask_insert jsn = '{"course_name": "MSBI.DEV.S20", "task_name": "MSBI.DEV.task.164", "taskdescription": "SSIS.Part.5", "task_topic": "SSIS.Part.5"}'
 */-- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_tasksubtask_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_tasksubtask_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 BEGIN

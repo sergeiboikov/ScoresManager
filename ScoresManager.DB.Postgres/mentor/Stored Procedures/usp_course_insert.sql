@@ -2,10 +2,10 @@
 -- Author:      Sergei Boikov
 -- Create Date: 2023-04-16
 -- Description: Load information for course from JSON
--- Example:     CALL lab.usp_course_insert('[{"course_name":"BI.RD.LAB.2023.1", "course_datestart":"2023-04-24", "course_datefinish": "2023-08-31"}]');
+-- Example:     CALL mentor.usp_course_insert('[{"course_name":"BI.RD.LAB.2023.1", "course_datestart":"2023-04-24", "course_datefinish": "2023-08-31"}]');
 -- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_course_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_course_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 BEGIN

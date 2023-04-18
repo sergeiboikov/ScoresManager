@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_subtask AS
+﻿CREATE OR REPLACE VIEW mentor.vw_subtask AS
 SELECT DISTINCT    
     t.task_id,
     t."name"            AS task_name,

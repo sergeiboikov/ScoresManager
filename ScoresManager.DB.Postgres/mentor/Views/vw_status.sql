@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_status AS
+﻿CREATE OR REPLACE VIEW mentor.vw_status AS
 SELECT    
     s.status_id,
     s."name"         AS status_name,

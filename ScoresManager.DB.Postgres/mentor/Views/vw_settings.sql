@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_settings AS
+﻿CREATE OR REPLACE VIEW mentor.vw_settings AS
 SELECT     
     s.settings_id,
     s.setting_name,

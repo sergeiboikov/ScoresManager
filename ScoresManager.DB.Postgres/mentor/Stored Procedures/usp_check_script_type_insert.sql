@@ -3,9 +3,9 @@
 -- Create Date: 2023-04-08
 -- Description: Load information for check_script_type from JSON
 -- Format JSON: '["SQL", "MDX"]'
--- Example:     CALL lab.usp_check_script_type_insert('["SQL", "MDX"]');
+-- Example:     CALL mentor.usp_check_script_type_insert('["SQL", "MDX"]');
 -- =============================================
-CREATE OR REPLACE PROCEDURE lab.usp_check_script_type_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_check_script_type_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 BEGIN

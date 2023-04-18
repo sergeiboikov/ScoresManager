@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_subtask_log AS
+﻿CREATE OR REPLACE VIEW mentor.vw_subtask_log AS
 SELECT      
     stl.subtask_log_id,
     c.course_id,

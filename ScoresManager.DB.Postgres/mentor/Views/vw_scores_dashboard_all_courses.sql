@@ -1,4 +1,4 @@
-﻿CREATE OR REPLACE VIEW lab.vw_scores_dashboard_all_courses AS
+﻿CREATE OR REPLACE VIEW mentor.vw_scores_dashboard_all_courses AS
 SELECT 
      c."name"                 AS course_name,
      t."name"                 AS task_name,

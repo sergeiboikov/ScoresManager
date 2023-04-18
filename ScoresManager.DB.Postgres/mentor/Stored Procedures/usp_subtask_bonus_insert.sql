@@ -5,7 +5,7 @@
 -- Description: Load information about bonuses for subtask from JSON
 -- Format JSON: '{"bonuses":{"Value":"read"},{"Value":"aliases"},"subtask_id":1}' --    Example. EXEC lab.usp_subtask_bonus_insert jsn = '{"bonuses":{"Value":"read"},{"Value":"aliases"},"subtask_id":1}' -- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_subtask_bonus_insert(jsn JSON)
+CREATE OR REPLACE PROCEDURE mentor.usp_subtask_bonus_insert(jsn JSON)
 LANGUAGE plpgsql
 AS $$
 BEGIN

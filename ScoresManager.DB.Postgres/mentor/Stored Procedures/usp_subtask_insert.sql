@@ -6,7 +6,7 @@
 -- Description: Load information about subtask from JSON. Value is bonus_code
 -- Format JSON: '{"bonuses":{"Value":"read"},{"Value":"aliases"},"subtaskdescription":"Create T-SQL script1","subtask_name":"subtask.03.06","subtask_topic_id":12,"subtaskmax_score":12.5,"task_id":1}' --    Example. EXEC lab.usp_subtask_insert jsn = '{"bonuses":{"Value":"read"},{"Value":"aliases"},"subtaskdescription":"Create T-SQL script1","subtask_name":"subtask.03.06","subtask_topic_id":12,"subtaskmax_score":12.5,"task_id":1}' -- =============================================
 
-CREATE OR REPLACE PROCEDURE lab.usp_subtask_insert
+CREATE OR REPLACE PROCEDURE mentor.usp_subtask_insert
 (
      jsn            TEXT
 )
