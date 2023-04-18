@@ -2,7 +2,7 @@
 -- Author:      Boykov_Sergey
 -- Create Date: 2023-04-17
 -- Description: Update the table lab.subtask_log. Load scores from JSON to the table.
-/* Example: CALL mentor.usp_scores_insert ('{"course_name": "MSBI.DEV.S19", "reviewer_name": "Sergei Boikov", "student_name": "Anna Sedina", "task_name": "MSBI.DEV.task.05", 
+/* Example: CALL mentor.usp_scores_insert ('{"course_name": "BI.RD.LAB.2023.1", "reviewer_name": "Sergei Boikov", "student_name": "Anna Sedina", "task_name": "MSBI.DEV.task.05", 
                                              "subtasks":  
                                                              [{"subtask_name": "subtask.05.08", "score": 5, "name_conv": 0, "readability": 1, "sarg": 0, "schema_name": 1, "aliases": 1, "determ_sorting": 0, "ontime": 1, "extra": 1, "comment": ""}
                                                             ,{"subtask_name": "subtask.05.09", "score": 5, "name_conv": 0, "readability": 1, "sarg": 0, "schema_name": 1, "aliases": 1, "determ_sorting": 0, "ontime": 1, "extra": 1, "comment": ""}]
@@ -132,7 +132,7 @@ BEGIN
     WHERE ut."name" = 'mentor'
         AND sc.course_id = tmp_course_id
         AND u."name" = reviewer_name_from_json
-    LIMIT 1;                  
+    LIMIT 1;
     
     IF (tmp_reviewer_id IS NULL)
     THEN
