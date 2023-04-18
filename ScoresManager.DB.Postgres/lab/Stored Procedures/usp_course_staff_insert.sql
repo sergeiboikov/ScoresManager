@@ -2,7 +2,7 @@
 -- Author:      Sergei Boikov
 -- Create Date: 2023-04-16
 -- Description: Load information about course_staff from JSON
--- Example:     CALL lab.usp_course_staff_insert('[{"username": "Sergei Boikov", "course_name": "BI.RD.LAB.2023.1", "user_email": "Sergei_Boikov@rntgroup.com", "user_type": "mentor"}]');
+-- Example:     CALL lab.usp_course_staff_insert('[{"username": "Sergei Boikov", "course_name": "BI.RD.LAB.2023.1", "user_email": "Sergei_Boikov@rntgroup.com", "user_type": "mentor"}, {"username": "Anna Sedina", "course_name": "BI.RD.LAB.2023.1", "user_email": "Anna_Sedina@rntgroup.com", "user_type": "student"}]');
 -- =============================================
 CREATE OR REPLACE PROCEDURE lab.usp_course_staff_insert(jsn JSON)
 LANGUAGE plpgsql
