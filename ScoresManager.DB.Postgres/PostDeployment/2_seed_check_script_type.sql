@@ -4,4 +4,4 @@
 -- Description: Query for populating initial values to the "check_script_type" table
 -- =============================================
 
-CALL lab.usp_check_script_type_insert('["SQL"]');
+CALL mentor.usp_check_script_type_insert('["SQL"]');

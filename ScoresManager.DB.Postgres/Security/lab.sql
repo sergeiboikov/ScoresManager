@@ -1,6 +1,0 @@
-﻿CREATE SCHEMA lab AUTHORIZATION postgres;
-
-
-
-
-

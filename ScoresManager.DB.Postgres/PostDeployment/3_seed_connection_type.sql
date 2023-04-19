@@ -4,4 +4,4 @@
 -- Description: Query for populating initial values to the "connection_type" table
 -- =============================================
 
-CALL lab.usp_connection_type_insert('[{"connection_type_name":"ODBC", "connection_type_description":"Application setting name in Function App Configuration (ODBC connection string)"}]');
+CALL mentor.usp_connection_type_insert('[{"connection_type_name":"ODBC", "connection_type_description":"Application setting name in Function App Configuration (ODBC connection string)"}]');
