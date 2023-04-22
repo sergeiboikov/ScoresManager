@@ -9,7 +9,7 @@
  * Grant permissions for mentor
 ========================================================================================================================*/
 
-CREATE USER mentor WITH PASSWORD '{pwd}';
+CREATE USER mentor WITH PASSWORD 'mentor';
 
 GRANT USAGE ON SCHEMA mentor TO mentor;
 GRANT SELECT ON ALL TABLES IN SCHEMA mentor TO mentor;

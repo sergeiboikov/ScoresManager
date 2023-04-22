@@ -16,4 +16,4 @@
     CONSTRAINT uc_course_staff_course_id_user_id        UNIQUE          (course_id , user_id)
 );
 
-CREATE SEQUENCE lab.sq_dbo_course_staff_course_staff_id START 1;
+CREATE SEQUENCE lab.sq_lab_course_staff_course_staff_id START 1;

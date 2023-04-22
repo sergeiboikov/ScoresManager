@@ -14,4 +14,4 @@
     CONSTRAINT fk_check_script_check_script_type_check_script_type_id FOREIGN KEY (check_script_type_id) REFERENCES lab.check_script_type(check_script_type_id)
 );
 
-CREATE SEQUENCE lab.sq_dbo_check_script_check_script_id START 1;
+CREATE SEQUENCE lab.sq_lab_check_script_check_script_id START 1;

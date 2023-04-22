@@ -26,4 +26,4 @@
     CONSTRAINT uc_subtask_log_subtask_id_student_id UNIQUE  (subtask_id , student_id)
 );
 
-CREATE SEQUENCE lab.sq_dbo_subtask_log_subtask_log_id START 1;
+CREATE SEQUENCE lab.sq_lab_subtask_log_subtask_log_id START 1;

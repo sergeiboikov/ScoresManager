@@ -51,7 +51,7 @@ BEGIN
             datefinish
         ) 
         VALUES (
-            nextval('lab.sq_dbo_course_course_id'),
+            nextval('lab.sq_lab_course_course_id'),
             src.course_name,
             src.course_datestart,
             src.course_datefinish

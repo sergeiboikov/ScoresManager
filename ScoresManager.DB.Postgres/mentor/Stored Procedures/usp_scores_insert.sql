@@ -227,7 +227,7 @@ BEGIN
             "comment"
         ) 
     VALUES (
-        nextval('lab.sq_dbo_subtask_log_subtask_log_id'),
+        nextval('lab.sq_lab_subtask_log_subtask_log_id'),
         rc.subtask_id,
         tmp_student_id,
         tmp_reviewer_id,

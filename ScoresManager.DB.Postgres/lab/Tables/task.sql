@@ -14,4 +14,4 @@
     CONSTRAINT uc_task_course_id_name UNIQUE  (course_id , "name")
 );
 
-CREATE SEQUENCE lab.sq_dbo_task_task_id START 1;
+CREATE SEQUENCE lab.sq_lab_task_task_id START 1;

@@ -10,4 +10,4 @@
     CONSTRAINT uc_user_type_name UNIQUE  ("name")
 );
 
-CREATE SEQUENCE lab.sq_dbo_user_type_user_type_id START 1;
+CREATE SEQUENCE lab.sq_lab_user_type_user_type_id START 1;

@@ -31,7 +31,7 @@ BEGIN
         "name"
     ) 
     VALUES (
-        nextval('lab.sq_dbo_check_script_type_check_script_type_id'),       
+        nextval('lab.sq_lab_check_script_type_check_script_type_id'),       
         src.check_script_type_name
     );
 END; $$

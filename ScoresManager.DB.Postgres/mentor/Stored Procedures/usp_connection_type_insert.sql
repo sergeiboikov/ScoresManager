@@ -40,7 +40,7 @@ BEGIN
             description
         ) 
         VALUES (
-            nextval('lab.sq_dbo_connection_type_connection_type_id'),
+            nextval('lab.sq_lab_connection_type_connection_type_id'),
             src.connection_type_name,
             src.connection_type_description
         );

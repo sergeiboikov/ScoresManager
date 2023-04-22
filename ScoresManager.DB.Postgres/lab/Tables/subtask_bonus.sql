@@ -11,4 +11,4 @@
     CONSTRAINT uc_subtask_bonus_subtask_id_bonus_id UNIQUE  (subtask_id , bonus_id)
 );
 
-CREATE SEQUENCE lab.sq_dbo_subtask_bonus_subtask_bonus_id START 1;
+CREATE SEQUENCE lab.sq_lab_subtask_bonus_subtask_bonus_id START 1;

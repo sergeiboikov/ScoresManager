@@ -11,4 +11,4 @@
     CONSTRAINT uc_bonus_code UNIQUE (code)
 );
 
-CREATE SEQUENCE lab.sq_dbo_bonus_bonus_id START 1;
+CREATE SEQUENCE lab.sq_lab_bonus_bonus_id START 1;

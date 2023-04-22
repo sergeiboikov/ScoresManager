@@ -10,4 +10,4 @@
     CONSTRAINT fk_connection_connection_type_connection_type_id FOREIGN KEY (connection_type_id) REFERENCES lab.connection_type(connection_type_id)
 );
 
-CREATE SEQUENCE lab.sq_dbo_connection_connection_id START 1;
+CREATE SEQUENCE lab.sq_lab_connection_connection_id START 1;

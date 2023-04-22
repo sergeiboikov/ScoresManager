@@ -17,4 +17,4 @@
     CONSTRAINT fk_subtask_check_script_check_script_id FOREIGN KEY (check_script_id) REFERENCES lab.check_script(check_script_id)
 );
 
-CREATE SEQUENCE lab.sq_dbo_subtask_subtask_id START 1;
+CREATE SEQUENCE lab.sq_lab_subtask_subtask_id START 1;

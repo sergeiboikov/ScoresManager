@@ -1,4 +1,4 @@
-﻿CREATE TABLE lab.user (
+﻿CREATE TABLE lab."user" (
     user_id         INT            NOT NULL,
     "name"          VARCHAR (100)  NOT NULL,
     email           VARCHAR (100)  NOT NULL,
@@ -11,4 +11,4 @@
     CONSTRAINT uc_user_email UNIQUE  (email)
 );
 
-CREATE SEQUENCE lab.sq_dbo_user_user_id START 1;
+CREATE SEQUENCE lab.sq_lab_user_user_id START 1;

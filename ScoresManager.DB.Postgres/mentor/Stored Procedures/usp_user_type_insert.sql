@@ -40,7 +40,7 @@ BEGIN
             description
         ) 
         VALUES (
-            nextval('lab.sq_dbo_user_type_user_type_id'),
+            nextval('lab.sq_lab_user_type_user_type_id'),
             src.user_type_name,
             src.user_type_description
         );

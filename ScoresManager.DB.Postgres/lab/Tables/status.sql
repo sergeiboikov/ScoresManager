@@ -10,4 +10,4 @@
     CONSTRAINT uc_status_name UNIQUE  ("name")
 );
 
-CREATE SEQUENCE lab.sq_dbo_status_status_id START 1;
+CREATE SEQUENCE lab.sq_lab_status_status_id START 1;

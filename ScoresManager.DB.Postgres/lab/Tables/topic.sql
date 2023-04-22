@@ -11,4 +11,4 @@
     CONSTRAINT uc_topic_name UNIQUE  ("name")
 );
 
-CREATE SEQUENCE lab.sq_dbo_topic_topic_id START 1;
+CREATE SEQUENCE lab.sq_lab_topic_topic_id START 1;

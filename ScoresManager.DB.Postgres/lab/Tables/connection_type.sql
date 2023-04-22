@@ -11,4 +11,4 @@
     CONSTRAINT uc_connection_type_name UNIQUE  ("name")
 );
 
-CREATE SEQUENCE lab.sq_dbo_connection_type_connection_type_id START 1;
+CREATE SEQUENCE lab.sq_lab_connection_type_connection_type_id START 1;

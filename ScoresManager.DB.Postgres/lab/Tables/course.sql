@@ -12,4 +12,4 @@
     CONSTRAINT uc_course_name UNIQUE  ("name")
 );
 
-CREATE SEQUENCE lab.sq_dbo_course_course_id START 1;
+CREATE SEQUENCE lab.sq_lab_course_course_id START 1;

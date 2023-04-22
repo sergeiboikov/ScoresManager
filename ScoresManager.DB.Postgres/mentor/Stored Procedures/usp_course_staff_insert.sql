@@ -27,10 +27,10 @@ BEGIN
         user_email, 
         user_type
     FROM json_to_recordset(jsn) AS j(
-        username VARCHAR(100), 
+        username    VARCHAR(100), 
         course_name VARCHAR(250), 
-        user_email VARCHAR(100),    
-        user_type VARCHAR(100)
+        user_email  VARCHAR(100),    
+        user_type   VARCHAR(100)
     );
 
 /*========================================================================================================================
@@ -88,7 +88,7 @@ BEGIN
             email
         ) 
         VALUES (
-            nextval('lab.sq_dbo_user_user_id'),
+            nextval('lab.sq_lab_user_user_id'),
             src.username,
             src.user_email
         );
@@ -121,7 +121,7 @@ BEGIN
         user_type_id
     ) VALUES
     (
-        nextval('lab.sq_dbo_course_staff_course_staff_id'),
+        nextval('lab.sq_lab_course_staff_course_staff_id'),
         src.user_id,
         src.course_id,
         src.user_type_id

@@ -12,4 +12,4 @@
     CONSTRAINT uc_settings_settings_id UNIQUE  (settings_id)
 );
 
-CREATE SEQUENCE lab.sq_dbo_settings_settings_id START 1;
+CREATE SEQUENCE lab.sq_lab_settings_settings_id START 1;
