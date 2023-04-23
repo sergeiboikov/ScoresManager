@@ -7,7 +7,7 @@
                                                              [{"subtask_name": "subtask.05.08", "score": 5, "name_conv": 0, "readability": 1, "sarg": 0, "schema_name": 1, "aliases": 1, "determ_sorting": 0, "ontime": 1, "extra": 1, "comment": ""}
                                                             ,{"subtask_name": "subtask.05.09", "score": 5, "name_conv": 0, "readability": 1, "sarg": 0, "schema_name": 1, "aliases": 1, "determ_sorting": 0, "ontime": 1, "extra": 1, "comment": ""}]
                                                          
-                                             }); */
+                                             }'); */
 -- =============================================
 
 CREATE OR REPLACE PROCEDURE mentor.usp_scores_insert(jsn JSON)
@@ -189,7 +189,7 @@ BEGIN
             stl.subtask_log_id,
             st.subtask_id,
             tmp.score,
-            isnull(tmp.name_conv,0) + isnull(tmp.readability,0) + isnull(tmp.sarg,0) + isnull(tmp.schema_name,0) + isnull(tmp.aliases,0) + isnull(tmp.determ_sorting,0) AS accuracy,
+            COALESCE(tmp.name_conv,0) + COALESCE(tmp.readability,0) + COALESCE(tmp.sarg,0) + COALESCE(tmp.schema_name,0) + COALESCE(tmp.aliases,0) + COALESCE(tmp.determ_sorting,0) AS accuracy,
             tmp.ontime,
             tmp.extra,
             tmp.comment
@@ -228,7 +228,7 @@ BEGIN
         ) 
     VALUES (
         nextval('lab.sq_lab_subtask_log_subtask_log_id'),
-        rc.subtask_id,
+        src.subtask_id,
         tmp_student_id,
         tmp_reviewer_id,
         src.score,
