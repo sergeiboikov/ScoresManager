@@ -1,0 +1,6 @@
+﻿CREATE SCHEMA mentor AUTHORIZATION sa;
+
+
+
+
+

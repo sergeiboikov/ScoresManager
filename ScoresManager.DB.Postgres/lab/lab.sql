@@ -1,0 +1,6 @@
+﻿CREATE SCHEMA lab AUTHORIZATION sa;
+
+
+
+
+
